@@ -8,149 +8,175 @@
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
-  --green: #1D9E75; --green-light: #E1F5EE; --green-dark: #085041;
-  --amber: #BA7517; --amber-light: #FAEEDA;
-  --red: #A32D2D; --red-light: #FCEBEB;
-  --blue: #185FA5; --blue-light: #E6F1FB;
-  --gray: #5F5E5A; --gray-light: #F1EFE8;
-  --text: #2C2C2A; --text-muted: #888780;
-  --border: rgba(0,0,0,0.12);
-  --surface: #fff; --bg: #F7F6F2;
+  --green: #1DB373; --green-light: #1a3d2e; --green-dark: #a3f0cc;
+  --amber: #e0a020; --amber-light: #3a2e10;
+  --red: #e05555; --red-light: #3a1a1a;
+  --blue: #4a9ede; --blue-light: #1a2a3a;
+  --gray: #9a9a96; --gray-light: #2a2a28;
+  --text: #e8e6e0; --text-muted: #888780;
+  --border: rgba(255,255,255,0.08);
+  --surface: #282826; --surface2: #323230;
+  --bg: #1a1a18;
   --radius: 12px; --radius-sm: 8px;
 }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.5; }
 
 /* NAV */
 nav { background: var(--surface); border-bottom: 0.5px solid var(--border); padding: 0 1.25rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
-.logo { font-size: 17px; font-weight: 600; color: var(--green-dark); display: flex; align-items: center; gap: 8px; }
-.logo-icon { font-size: 22px; }
+.logo { font-size: 17px; font-weight: 700; color: var(--green-dark); display: flex; align-items: center; gap: 10px; letter-spacing: -0.3px; }
+.logo img { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; }
 .nav-right { display: flex; align-items: center; gap: 10px; }
 .user-chip { display: flex; align-items: center; gap: 8px; background: var(--gray-light); border-radius: 20px; padding: 4px 12px 4px 4px; font-size: 13px; }
 .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; overflow: hidden; }
 .avatar img { width: 100%; height: 100%; object-fit: cover; }
 
 /* BUTTONS */
-.btn { padding: 7px 16px; border-radius: var(--radius-sm); border: 0.5px solid var(--border); background: var(--surface); font-size: 14px; cursor: pointer; color: var(--text); transition: background 0.15s; }
+.btn { padding: 7px 16px; border-radius: var(--radius-sm); border: 0.5px solid var(--border); background: var(--surface2); font-size: 14px; cursor: pointer; color: var(--text); transition: background 0.15s; }
 .btn:hover { background: var(--gray-light); }
-.btn-primary { background: var(--green); color: #fff; border-color: var(--green); }
-.btn-primary:hover { background: var(--green-dark); }
+.btn-primary { background: var(--green); color: #0a2018; border-color: var(--green); font-weight: 600; }
+.btn-primary:hover { background: #17a065; }
 .btn-sm { padding: 5px 12px; font-size: 13px; }
 .btn-danger { color: var(--red); border-color: var(--red-light); }
 .btn-danger:hover { background: var(--red-light); }
-.btn-blue { background: var(--blue); color: #fff; border-color: var(--blue); font-size: 12px; padding: 4px 10px; }
-.btn-blue:hover { background: #0C447C; }
+.btn-blue { background: var(--blue); color: #fff; border-color: var(--blue); font-size: 12px; padding: 4px 10px; border-radius: 6px; cursor: pointer; }
+.btn-blue:hover { background: #3080b8; }
 
 /* LOGIN */
 #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 56px); padding: 2rem; text-align: center; }
 .login-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 2.5rem 2rem; max-width: 360px; width: 100%; }
-.login-card h2 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+.login-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; color: var(--green-dark); }
 .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 1.5rem; }
-.btn-google { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 10px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); font-size: 15px; cursor: pointer; transition: background 0.15s; }
+.btn-google { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 10px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); background: var(--surface2); color: var(--text); font-size: 15px; cursor: pointer; transition: background 0.15s; }
 .btn-google:hover { background: var(--gray-light); }
 
 /* MAIN */
 #app { display: none; }
-.container { max-width: 920px; margin: 0 auto; padding: 1.5rem 1rem; }
+.container { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem; }
 
 /* SEARCH */
-.search-wrap { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+.search-wrap { display: flex; gap: 8px; margin-bottom: 1.25rem; }
 .search-input { flex: 1; padding: 10px 14px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; background: var(--surface); color: var(--text); outline: none; }
 .search-input:focus { border-color: var(--green); }
+.search-input::placeholder { color: var(--text-muted); }
 
 /* TABS */
-.tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 4px; overflow-x: auto; }
-.tab { flex: 1; min-width: 70px; padding: 7px; text-align: center; font-size: 13px; border-radius: 6px; cursor: pointer; color: var(--text-muted); border: none; background: none; white-space: nowrap; }
-.tab.active { background: var(--green); color: #fff; font-weight: 500; }
+.tabs { display: flex; gap: 4px; margin-bottom: 1.25rem; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 4px; overflow-x: auto; }
+.tab { flex: 1; min-width: 70px; padding: 6px 10px; text-align: center; font-size: 13px; border-radius: 6px; cursor: pointer; color: var(--text-muted); border: none; background: none; white-space: nowrap; }
+.tab.active { background: var(--green); color: #0a2018; font-weight: 600; }
 
 /* SAVINGS BAR */
-.savings-bar { background: var(--green-light); border: 0.5px solid var(--green); border-radius: var(--radius-sm); padding: 10px 16px; margin-bottom: 1.5rem; display: none; }
+.savings-bar { background: var(--green-light); border: 0.5px solid var(--green); border-radius: var(--radius-sm); padding: 10px 16px; margin-bottom: 1.25rem; display: none; }
 .savings-bar.visible { display: block; }
 .savings-bar p { font-size: 13px; color: var(--green-dark); }
 
 /* SECTION HEADER */
-.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .section-title { font-size: 16px; font-weight: 600; }
 .count-badge { background: var(--gray-light); color: var(--gray); font-size: 12px; padding: 2px 8px; border-radius: 10px; }
 
+/* PRODUCT GRID — 4 columns */
+.product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+
 /* PRODUCT CARD */
-.product-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 10px; transition: box-shadow 0.15s; }
-.product-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-.product-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
-.product-name { font-weight: 600; font-size: 15px; }
-.product-meta { display: flex; align-items: center; gap: 6px; margin-top: 3px; flex-wrap: wrap; }
-.product-category { font-size: 12px; color: var(--text-muted); background: var(--gray-light); padding: 2px 8px; border-radius: 10px; }
-.sku-tag { font-size: 11px; color: var(--blue); background: var(--blue-light); padding: 2px 8px; border-radius: 10px; font-family: monospace; }
-.product-actions { display: flex; gap: 6px; flex-shrink: 0; }
-
-/* PRICES GRID */
-.prices-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.price-cell { border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 10px; position: relative; }
-.price-cell.best-price { border-color: var(--green); background: var(--green-light); }
-.price-cell.no-price { opacity: 0.45; }
-.store-name { font-size: 11px; color: var(--text-muted); margin-bottom: 3px; font-weight: 500; }
-.price-value { font-size: 18px; font-weight: 600; }
-.price-cell.best-price .price-value { color: var(--green-dark); }
-.best-label { font-size: 10px; color: var(--green); font-weight: 600; margin-top: 1px; }
-.price-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-.price-na { font-size: 14px; color: var(--text-muted); }
-.cell-actions { display: flex; gap: 4px; margin-top: 6px; }
-.edit-price-btn { flex: 1; padding: 3px; font-size: 11px; text-align: center; border: 0.5px dashed var(--border); border-radius: 5px; background: none; cursor: pointer; color: var(--text-muted); transition: background 0.1s; }
-.edit-price-btn:hover { background: var(--gray-light); color: var(--text); }
-.history-btn { padding: 3px 6px; font-size: 11px; border: 0.5px solid var(--border); border-radius: 5px; background: none; cursor: pointer; color: var(--text-muted); transition: background 0.1s; }
-.history-btn:hover { background: var(--blue-light); color: var(--blue); }
-
-/* SKU LINKS ROW */
-.sku-links { display: flex; gap: 6px; margin-top: 8px; padding-top: 8px; border-top: 0.5px solid var(--border); flex-wrap: wrap; align-items: center; }
-.sku-links span { font-size: 12px; color: var(--text-muted); }
-
-/* EMPTY */
-.empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
-.empty-state p { margin-bottom: 1rem; }
-.loading { display: flex; align-items: center; justify-content: center; padding: 3rem; color: var(--text-muted); font-size: 14px; }
+.product-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: box-shadow 0.15s, border-color 0.15s; cursor: pointer; }
+.product-card:hover { border-color: rgba(255,255,255,0.18); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
+.product-img { width: 100%; aspect-ratio: 1; object-fit: cover; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 40px; }
+.product-img img { width: 100%; height: 100%; object-fit: contain; padding: 8px; background: var(--surface2); }
+.product-img-placeholder { width: 100%; aspect-ratio: 1; background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 36px; color: var(--text-muted); }
+.product-body { padding: 10px 12px; flex: 1; display: flex; flex-direction: column; }
+.product-name-grid { font-weight: 600; font-size: 13px; line-height: 1.3; margin-bottom: 6px; color: var(--text); }
+.product-category-grid { font-size: 11px; color: var(--text-muted); background: var(--gray-light); padding: 2px 7px; border-radius: 8px; display: inline-block; margin-bottom: 8px; }
+.product-footer { margin-top: auto; padding-top: 8px; border-top: 0.5px solid var(--border); }
+.best-price-label { font-size: 11px; color: var(--text-muted); margin-bottom: 2px; }
+.best-price-value { font-size: 18px; font-weight: 700; color: var(--green-dark); }
+.best-price-store { font-size: 11px; color: var(--green); margin-top: 1px; }
+.offer-badge { display: inline-block; background: var(--amber-light); color: var(--amber); font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 5px; margin-bottom: 3px; }
+.card-actions { display: flex; gap: 4px; margin-top: 8px; }
+.card-btn { flex: 1; padding: 5px; font-size: 11px; border-radius: 6px; border: 0.5px solid var(--border); background: var(--surface2); color: var(--text-muted); cursor: pointer; text-align: center; transition: background 0.1s; }
+.card-btn:hover { background: var(--gray-light); color: var(--text); }
 
 /* MODAL */
-.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
 .modal-overlay.open { display: flex; }
-.modal { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; width: 100%; max-width: 440px; max-height: 92vh; overflow-y: auto; }
-.modal h3 { font-size: 17px; font-weight: 600; margin-bottom: 1rem; }
+.modal { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.5rem; width: 100%; max-width: 460px; max-height: 92vh; overflow-y: auto; }
+.modal h3 { font-size: 17px; font-weight: 600; margin-bottom: 1rem; color: var(--text); }
 .form-group { margin-bottom: 14px; }
 .form-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 5px; }
-.form-control { width: 100%; padding: 8px 12px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; background: var(--surface); color: var(--text); outline: none; }
+.form-control { width: 100%; padding: 8px 12px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; background: var(--surface2); color: var(--text); outline: none; }
 .form-control:focus { border-color: var(--green); }
+.form-control::placeholder { color: var(--text-muted); }
 .form-hint { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
 .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1rem; }
-.store-prices-section { margin-top: 1rem; }
-.store-prices-section h4 { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
-.store-price-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.store-price-row label { font-size: 13px; width: 150px; flex-shrink: 0; }
-.price-input-wrap { flex: 1; position: relative; }
+.section-divider { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin: 16px 0 10px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border); }
+.store-price-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+.store-price-row label { font-size: 13px; width: 140px; flex-shrink: 0; padding-top: 8px; color: var(--text); }
+.store-price-col { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.price-input-wrap { position: relative; }
 .price-input-wrap span { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--text-muted); }
-.price-input-wrap input { width: 100%; padding: 7px 10px 7px 22px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; background: var(--surface); color: var(--text); outline: none; }
+.price-input-wrap input { width: 100%; padding: 7px 10px 7px 22px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; background: var(--surface2); color: var(--text); outline: none; }
 .price-input-wrap input:focus { border-color: var(--green); }
+.offer-row { display: flex; gap: 6px; align-items: center; }
+.offer-row input { flex: 1; padding: 5px 8px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); font-size: 12px; background: var(--surface2); color: var(--text); outline: none; }
+.offer-row input::placeholder { color: var(--text-muted); }
+.offer-row input:focus { border-color: var(--amber); }
+.offer-label { font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+
+/* DETAIL MODAL */
+.detail-modal { max-width: 620px; }
+.detail-img-wrap { width: 100%; aspect-ratio: 2; background: var(--surface2); border-radius: var(--radius-sm); overflow: hidden; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; }
+.detail-img-wrap img { max-height: 200px; object-fit: contain; }
+.detail-img-placeholder { font-size: 60px; color: var(--text-muted); }
+.prices-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 1rem; }
+.price-cell { border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 10px; background: var(--surface2); }
+.price-cell.best-price { border-color: var(--green); background: var(--green-light); }
+.price-cell.no-price { opacity: 0.4; }
+.store-name { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.price-value { font-size: 20px; font-weight: 700; color: var(--text); }
+.price-cell.best-price .price-value { color: var(--green-dark); }
+.best-tag { font-size: 10px; color: var(--green); font-weight: 600; margin-top: 2px; }
+.price-offer { font-size: 11px; color: var(--amber); margin-top: 2px; font-weight: 600; }
+.price-unit { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+.price-date { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+.price-na { font-size: 14px; color: var(--text-muted); }
+.cell-actions { display: flex; gap: 4px; margin-top: 8px; }
+.edit-price-btn { flex: 1; padding: 4px; font-size: 11px; text-align: center; border: 0.5px dashed var(--border); border-radius: 5px; background: none; cursor: pointer; color: var(--text-muted); transition: background 0.1s; }
+.edit-price-btn:hover { background: var(--gray-light); color: var(--text); }
+.history-btn { padding: 4px 8px; font-size: 11px; border: 0.5px solid var(--border); border-radius: 5px; background: none; cursor: pointer; color: var(--text-muted); }
+.history-btn:hover { background: var(--blue-light); color: var(--blue); }
+.sku-links { display: flex; gap: 6px; padding-top: 10px; flex-wrap: wrap; align-items: center; }
+.sku-links span { font-size: 12px; color: var(--text-muted); }
 
 /* HISTORY MODAL */
 .history-modal { max-width: 600px; }
 .history-store-tabs { display: flex; gap: 4px; margin-bottom: 1rem; }
-.history-store-tab { flex: 1; padding: 6px; text-align: center; font-size: 12px; border-radius: 6px; cursor: pointer; border: 0.5px solid var(--border); background: var(--surface); color: var(--text-muted); }
+.history-store-tab { flex: 1; padding: 6px; text-align: center; font-size: 12px; border-radius: 6px; cursor: pointer; border: 0.5px solid var(--border); background: var(--surface2); color: var(--text-muted); }
 .history-store-tab.active { background: var(--blue); color: #fff; border-color: var(--blue); }
 .chart-wrap { position: relative; height: 220px; margin-bottom: 1rem; }
 .history-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .history-table th { text-align: left; padding: 6px 8px; color: var(--text-muted); font-weight: 500; border-bottom: 0.5px solid var(--border); }
-.history-table td { padding: 6px 8px; border-bottom: 0.5px solid var(--border); }
+.history-table td { padding: 6px 8px; border-bottom: 0.5px solid var(--border); color: var(--text); }
 .history-table tr:last-child td { border-bottom: none; }
 .no-history { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 14px; }
 
-@media (max-width: 600px) {
-  .prices-grid { grid-template-columns: 1fr; }
-  .user-name-nav { display: none; }
-  nav { padding: 0 1rem; }
-}
+/* PRICE EDIT MODAL */
+.single-price-modal { max-width: 380px; }
+
+.empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+.empty-state p { margin-bottom: 1rem; }
+.loading { display: flex; align-items: center; justify-content: center; padding: 3rem; color: var(--text-muted); font-size: 14px; }
+
+@media (max-width: 900px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px) { .product-grid { grid-template-columns: repeat(2, 1fr); } .prices-grid { grid-template-columns: 1fr; } .user-name-nav { display: none; } nav { padding: 0 1rem; } }
+@media (max-width: 400px) { .product-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="logo"><span class="logo-icon">🛒</span> PrecioMercado</div>
+  <div class="logo">
+    <img src="data:image/png;base64,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" alt="Logo">
+    PrecioMercado
+  </div>
   <div class="nav-right">
     <div class="user-chip" id="user-chip" style="display:none">
       <div class="avatar" id="user-avatar">?</div>
@@ -163,19 +189,13 @@ nav { background: var(--surface); border-bottom: 0.5px solid var(--border); padd
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
-    <div style="font-size:40px;margin-bottom:12px">🛒</div>
+    <img src="data:image/png;base64,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" style="width:72px;height:72px;object-fit:contain;margin-bottom:12px;border-radius:12px" alt="Logo">
     <h2>PrecioMercado</h2>
     <p>Compara precios en Jumbo Portal Ñuñoa, Líder Av. Vespucio y Mass Av. Vespucio</p>
     <button class="btn-google" onclick="loginGoogle()">
-      <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-      </svg>
+      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
       Entrar con Google
     </button>
-    <p style="margin-top:1rem;font-size:12px;color:var(--text-muted)">Tus datos son privados y solo tú los ves</p>
   </div>
 </div>
 
@@ -183,15 +203,17 @@ nav { background: var(--surface); border-bottom: 0.5px solid var(--border); padd
 <div id="app">
   <div class="container">
     <div class="search-wrap">
-      <input type="search" class="search-input" id="search-input" placeholder="Buscar producto..." oninput="filterProducts()">
+      <input type="search" class="search-input" id="search-input" placeholder="🔍 Buscar producto..." oninput="filterProducts()">
       <button class="btn btn-primary" onclick="openAddProduct()">+ Agregar</button>
     </div>
-    <div class="tabs">
+    <div class="tabs" id="tabs-wrap">
       <button class="tab active" id="tab-all" onclick="switchTab('all')">Todos</button>
       <button class="tab" id="tab-lacteos" onclick="switchTab('Lácteos')">Lácteos</button>
       <button class="tab" id="tab-panaderia" onclick="switchTab('Panadería')">Panadería</button>
       <button class="tab" id="tab-carnes" onclick="switchTab('Carnes')">Carnes</button>
       <button class="tab" id="tab-verduras" onclick="switchTab('Verduras')">Verduras</button>
+      <button class="tab" id="tab-dulces" onclick="switchTab('Dulces')">Dulces</button>
+      <button class="tab" id="tab-galletas" onclick="switchTab('Galletas')">Galletas</button>
       <button class="tab" id="tab-otros" onclick="switchTab('Otros')">Otros</button>
     </div>
     <div class="savings-bar" id="savings-bar"><p id="savings-text"></p></div>
@@ -215,36 +237,63 @@ nav { background: var(--surface); border-bottom: 0.5px solid var(--border); padd
       <label>Categoría</label>
       <select class="form-control" id="prod-category">
         <option>Lácteos</option><option>Panadería</option><option>Carnes</option>
-        <option>Verduras</option><option>Bebidas</option><option>Limpieza</option>
-        <option>Higiene</option><option>Otros</option>
+        <option>Verduras</option><option>Bebidas</option><option>Dulces</option>
+        <option>Galletas</option><option>Limpieza</option><option>Higiene</option><option>Otros</option>
       </select>
     </div>
     <div class="form-group">
-      <label>SKU Líder (opcional)</label>
-      <input class="form-control" id="prod-sku-lider" placeholder="Ej: 00750100">
-      <p class="form-hint">El SKU aparece en la URL del producto en lider.cl</p>
+      <label>URL de imagen (opcional)</label>
+      <input class="form-control" id="prod-img" placeholder="Pega el link de la imagen de jumbo.cl o lider.cl">
+      <p class="form-hint">Abre el producto en jumbo.cl o lider.cl, clic derecho en la foto → "Copiar dirección de imagen"</p>
     </div>
     <div class="form-group">
-      <label>SKU Jumbo (opcional)</label>
-      <input class="form-control" id="prod-sku-jumbo" placeholder="Ej: 7802900522219">
-      <p class="form-hint">El SKU aparece en la URL del producto en jumbo.cl</p>
+      <label>Link Jumbo.cl (opcional)</label>
+      <input class="form-control" id="prod-link-jumbo" placeholder="https://www.jumbo.cl/...">
     </div>
-    <div class="store-prices-section">
-      <h4>Precios actuales</h4>
-      <div class="store-price-row">
-        <label>🏬 Jumbo Portal Ñuñoa</label>
-        <div class="price-input-wrap"><span>$</span><input type="number" id="price-jumbo" placeholder="0"></div>
-      </div>
-      <div class="store-price-row">
-        <label>🏬 Líder Av. Vespucio</label>
-        <div class="price-input-wrap"><span>$</span><input type="number" id="price-lider" placeholder="0"></div>
-      </div>
-      <div class="store-price-row">
-        <label>🏪 Mass Av. Vespucio</label>
-        <div class="price-input-wrap"><span>$</span><input type="number" id="price-mass" placeholder="0"></div>
-      </div>
-      <p class="form-hint">Deja en 0 si no tienes el precio todavía</p>
+    <div class="form-group">
+      <label>Link Lider.cl (opcional)</label>
+      <input class="form-control" id="prod-link-lider" placeholder="https://super.lider.cl/...">
     </div>
+
+    <div class="section-divider">Precios y ofertas por tienda</div>
+    <p class="form-hint" style="margin-bottom:10px">Precio normal + si hay oferta (ej: 3x.200)</p>
+
+    <div class="store-price-row">
+      <label>🏬 Jumbo<br>Portal Ñuñoa</label>
+      <div class="store-price-col">
+        <div class="price-input-wrap"><span>$</span><input type="number" id="price-jumbo" placeholder="Precio normal"></div>
+        <div class="offer-row">
+          <input type="number" id="offer-qty-jumbo" placeholder="Cant." style="width:60px;flex:none">
+          <span class="offer-label">unidades por</span>
+          <div class="price-input-wrap" style="flex:1"><span>$</span><input type="number" id="offer-price-jumbo" placeholder="precio total"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="store-price-row">
+      <label>🏬 Líder<br>Av. Vespucio</label>
+      <div class="store-price-col">
+        <div class="price-input-wrap"><span>$</span><input type="number" id="price-lider" placeholder="Precio normal"></div>
+        <div class="offer-row">
+          <input type="number" id="offer-qty-lider" placeholder="Cant." style="width:60px;flex:none">
+          <span class="offer-label">unidades por</span>
+          <div class="price-input-wrap" style="flex:1"><span>$</span><input type="number" id="offer-price-lider" placeholder="precio total"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="store-price-row">
+      <label>🏪 Mass<br>Av. Vespucio</label>
+      <div class="store-price-col">
+        <div class="price-input-wrap"><span>$</span><input type="number" id="price-mass" placeholder="Precio normal"></div>
+        <div class="offer-row">
+          <input type="number" id="offer-qty-mass" placeholder="Cant." style="width:60px;flex:none">
+          <span class="offer-label">unidades por</span>
+          <div class="price-input-wrap" style="flex:1"><span>$</span><input type="number" id="offer-price-mass" placeholder="precio total"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal-footer">
       <button class="btn" onclick="closeModal()">Cancelar</button>
       <button class="btn btn-primary" onclick="saveProduct()">Guardar</button>
@@ -252,17 +301,35 @@ nav { background: var(--surface); border-bottom: 0.5px solid var(--border); padd
   </div>
 </div>
 
+<!-- MODAL: DETALLE PRODUCTO -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal detail-modal">
+    <h3 id="detail-name"></h3>
+    <div class="detail-img-wrap" id="detail-img-wrap"></div>
+    <div class="prices-grid" id="detail-prices"></div>
+    <div class="sku-links" id="detail-links"></div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" id="detail-delete-btn">Eliminar</button>
+      <button class="btn btn-sm" id="detail-edit-btn">✏ Editar</button>
+      <button class="btn" onclick="closeDetailModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL: EDITAR PRECIO INDIVIDUAL -->
 <div class="modal-overlay" id="price-modal">
-  <div class="modal">
+  <div class="modal single-price-modal">
     <h3 id="price-modal-title">Actualizar precio</h3>
     <p style="font-size:13px;color:var(--text-muted);margin-bottom:1rem" id="price-modal-subtitle"></p>
     <div class="form-group">
-      <label>Precio ($)</label>
-      <div class="price-input-wrap" style="position:relative">
-        <span style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted)">$</span>
-        <input type="number" id="single-price-input" class="form-control" style="padding-left:22px">
-      </div>
+      <label>Precio normal ($)</label>
+      <div class="price-input-wrap"><span>$</span><input type="number" id="single-price-input" class="form-control" style="padding-left:22px"></div>
+    </div>
+    <div class="section-divider">Oferta (opcional)</div>
+    <div class="offer-row" style="margin-bottom:6px">
+      <input type="number" id="single-offer-qty" placeholder="Cant." style="width:70px;flex:none;padding:7px 8px;border:0.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);font-size:14px">
+      <span class="offer-label" style="font-size:13px">unidades por $</span>
+      <input type="number" id="single-offer-price" placeholder="precio total" style="flex:1;padding:7px 8px;border:0.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface2);color:var(--text);font-size:14px">
     </div>
     <p class="form-hint" id="price-modal-hint"></p>
     <div class="modal-footer">
@@ -280,9 +347,7 @@ nav { background: var(--surface); border-bottom: 0.5px solid var(--border); padd
     <div class="history-store-tabs" id="history-store-tabs"></div>
     <div class="chart-wrap"><canvas id="history-chart"></canvas></div>
     <div id="history-table-wrap"></div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeHistoryModal()">Cerrar</button>
-    </div>
+    <div class="modal-footer"><button class="btn" onclick="closeHistoryModal()">Cerrar</button></div>
   </div>
 </div>
 
@@ -311,20 +376,15 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const STORES = [
-  { id: 'jumbo', label: 'Jumbo Portal Ñuñoa', icon: '🏬', color: '#185FA5' },
-  { id: 'lider', label: 'Líder Av. Vespucio',  icon: '🏬', color: '#1D9E75' },
-  { id: 'mass',  label: 'Mass Av. Vespucio',   icon: '🏪', color: '#BA7517' },
+  { id: 'jumbo', label: 'Jumbo Portal Ñuñoa', short: 'Jumbo', icon: '🏬', color: '#4a9ede' },
+  { id: 'lider', label: 'Líder Av. Vespucio',  short: 'Líder', icon: '🏬', color: '#1DB373' },
+  { id: 'mass',  label: 'Mass Av. Vespucio',   short: 'Mass',  icon: '🏪', color: '#e0a020' },
 ];
 
-let currentUser = null;
-let allProducts = [];
-let currentTab = 'all';
-let editingProductId = null;
-let editingPriceCtx = null;
-let unsubscribe = null;
-let historyChart = null;
-let historyProductId = null;
-let historyActiveStore = 'jumbo';
+let currentUser = null, allProducts = [], currentTab = 'all';
+let editingProductId = null, editingPriceCtx = null, unsubscribe = null;
+let historyChart = null, historyProductId = null, historyActiveStore = 'jumbo';
+let detailProductId = null;
 
 // ── AUTH ──────────────────────────────────
 window.loginGoogle = async () => {
@@ -342,44 +402,46 @@ onAuthStateChanged(auth, user => {
     document.getElementById('logout-btn').style.display = 'block';
     document.getElementById('user-name-nav').textContent = user.displayName?.split(' ')[0] || '';
     const av = document.getElementById('user-avatar');
-    if (user.photoURL) av.innerHTML = `<img src="${user.photoURL}" alt="">`;
-    else av.textContent = (user.displayName || '?')[0].toUpperCase();
+    if (user.photoURL) av.innerHTML = '<img src="'+user.photoURL+'" alt="">';
+    else av.textContent = (user.displayName||'?')[0].toUpperCase();
     listenProducts();
   } else {
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('app').style.display = 'none';
     document.getElementById('user-chip').style.display = 'none';
     document.getElementById('logout-btn').style.display = 'none';
-    allProducts = [];
-    renderProducts();
+    allProducts = []; renderProducts();
   }
 });
 
 // ── FIRESTORE ─────────────────────────────
 function listenProducts() {
   if (unsubscribe) unsubscribe();
-  unsubscribe = onSnapshot(query(collection(db, 'users', currentUser.uid, 'products')), snap => {
-    allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    allProducts.sort((a,b) => a.name.localeCompare(b.name, 'es'));
+  unsubscribe = onSnapshot(query(collection(db,'users',currentUser.uid,'products')), snap => {
+    allProducts = snap.docs.map(d => ({id:d.id,...d.data()}));
+    allProducts.sort((a,b) => a.name.localeCompare(b.name,'es'));
     renderProducts();
     if (historyProductId) refreshHistoryModal();
+    if (detailProductId) refreshDetailModal();
   });
 }
+async function saveProductToDb(p) { await setDoc(doc(db,'users',currentUser.uid,'products',p.id), p); }
+async function deleteProductFromDb(id) { await deleteDoc(doc(db,'users',currentUser.uid,'products',id)); }
 
-async function saveProductToDb(product) {
-  await setDoc(doc(db, 'users', currentUser.uid, 'products', product.id), product);
-}
-async function deleteProductFromDb(id) {
-  await deleteDoc(doc(db, 'users', currentUser.uid, 'products', id));
+// ── EFFECTIVE PRICE (considering offers) ──
+function effectivePrice(prices, offers, storeId) {
+  const offer = offers?.[storeId];
+  if (offer && offer.qty > 0 && offer.total > 0) return offer.total / offer.qty;
+  return prices?.[storeId] || 0;
 }
 
-// ── RENDER ────────────────────────────────
+// ── RENDER GRID ────────────────────────────
 function getFiltered() {
   const q = document.getElementById('search-input').value.trim().toLowerCase();
   return allProducts.filter(p => {
-    const matchSearch = !q || p.name.toLowerCase().includes(q) || (p.category||'').toLowerCase().includes(q) || (p.skuLider||'').includes(q) || (p.skuJumbo||'').includes(q);
-    const matchTab = currentTab === 'all' || p.category === currentTab;
-    return matchSearch && matchTab;
+    const ms = !q || p.name.toLowerCase().includes(q) || (p.category||'').toLowerCase().includes(q);
+    const mt = currentTab==='all' || p.category===currentTab;
+    return ms && mt;
   });
 }
 
@@ -389,114 +451,149 @@ function renderProducts() {
   document.getElementById('product-count').textContent = filtered.length;
   updateSavingsBar(filtered);
   if (!filtered.length) {
-    list.innerHTML = `<div class="empty-state"><p>No hay productos todavía</p><button class="btn btn-primary" onclick="openAddProduct()">+ Agregar el primero</button></div>`;
+    list.innerHTML = '<div class="empty-state"><p>No hay productos todavía</p><button class="btn btn-primary" onclick="openAddProduct()">+ Agregar el primero</button></div>';
     return;
   }
-  list.innerHTML = filtered.map(renderCard).join('');
+  list.innerHTML = '<div class="product-grid">' + filtered.map(renderGridCard).join('') + '</div>';
 }
 
-function renderCard(p) {
-  const prices = p.prices || {};
-  const history = p.history || {};
-  const valid = STORES.filter(s => (prices[s.id]||0) > 0);
-  const minVal = valid.length ? Math.min(...valid.map(s => prices[s.id])) : null;
+function renderGridCard(p) {
+  const prices = p.prices||{}, offers = p.offers||{};
+  const valid = STORES.filter(s => effectivePrice(prices,offers,s.id) > 0);
+  const bestStore = valid.length ? valid.reduce((a,b) => effectivePrice(prices,offers,a.id) < effectivePrice(prices,offers,b.id) ? a : b) : null;
+  const bestVal = bestStore ? effectivePrice(prices,offers,bestStore.id,) : null;
+  const hasOffer = bestStore && offers[bestStore.id]?.qty > 0;
 
-  const cells = STORES.map(s => {
-    const val = prices[s.id] || 0;
-    const isBest = val > 0 && val === minVal && valid.length > 1;
-    const noPrice = val <= 0;
-    const hist = history[s.id] || [];
-    const hasHistory = hist.length > 1;
-    return `<div class="price-cell ${isBest?'best-price':''} ${noPrice?'no-price':''}">
-      <div class="store-name">${s.icon} ${s.label}</div>
-      ${noPrice
-        ? `<div class="price-na">Sin precio</div>`
-        : `<div class="price-value">${fmt(val)}</div>
-           ${isBest ? '<div class="best-label">✓ más barato</div>' : ''}
-           <div class="price-date">${fmtDate(p.updatedAt)}</div>`}
-      <div class="cell-actions">
-        <button class="edit-price-btn" onclick="openPriceEdit('${p.id}','${s.id}','${s.label}',${val})">
-          ✏ ${noPrice?'Agregar':'Editar'}
-        </button>
-        <button class="history-btn" title="Ver historial" onclick="openHistoryModal('${p.id}','${s.id}')">
-          📈${hasHistory?'·':''}
-        </button>
-      </div>
-    </div>`;
-  }).join('');
+  const imgHtml = p.imageUrl
+    ? '<img src="'+esc(p.imageUrl)+'" alt="'+esc(p.name)+'" onerror="this.parentElement.innerHTML=\'<div class=product-img-placeholder>🛒</div>\'">'
+    : '<div class="product-img-placeholder">🛒</div>';
 
-  // SKU links row
-  const skuLinks = [];
-  if (p.skuLider) skuLinks.push(`<a href="https://super.lider.cl/product/sku/${p.skuLider}" target="_blank"><button class="btn btn-blue">Lider.cl ↗</button></a>`);
-  if (p.skuJumbo) skuLinks.push(`<a href="https://www.jumbo.cl/product/sku/${p.skuJumbo}" target="_blank"><button class="btn btn-blue">Jumbo.cl ↗</button></a>`);
-  const skuRow = (skuLinks.length || p.skuLider || p.skuJumbo)
-    ? `<div class="sku-links"><span>Ver online:</span>${skuLinks.join('')}${!skuLinks.length?'<span style="font-size:12px;color:var(--text-muted)">Agrega SKU para ver links directos</span>':''}</div>`
-    : '';
-
-  return `<div class="product-card">
-    <div class="product-header">
-      <div>
-        <div class="product-name">${esc(p.name)}</div>
-        <div class="product-meta">
-          <span class="product-category">${esc(p.category||'Otros')}</span>
-          ${p.skuLider?`<span class="sku-tag">SKU Líder: ${esc(p.skuLider)}</span>`:''}
-          ${p.skuJumbo?`<span class="sku-tag">SKU Jumbo: ${esc(p.skuJumbo)}</span>`:''}
-        </div>
-      </div>
-      <div class="product-actions">
-        <button class="btn btn-sm" onclick="openEditProduct('${p.id}')">✏</button>
-        <button class="btn btn-sm btn-danger" onclick="confirmDelete('${p.id}','${esc(p.name)}')">✕</button>
-      </div>
-    </div>
-    <div class="prices-grid">${cells}</div>
-    ${skuRow}
-  </div>`;
+  return '<div class="product-card" onclick="openDetailModal(\''+p.id+'\')">'
+    + '<div class="product-img">'+imgHtml+'</div>'
+    + '<div class="product-body">'
+    + '<div class="product-name-grid">'+esc(p.name)+'</div>'
+    + '<span class="product-category-grid">'+esc(p.category||'Otros')+'</span>'
+    + '<div class="product-footer">'
+    + (bestVal ? (
+        '<div class="best-price-label">Mejor precio</div>'
+        + (hasOffer ? '<div class="offer-badge">🏷 Oferta '+offers[bestStore.id].qty+'x'+fmt(offers[bestStore.id].total)+'</div>' : '')
+        + '<div class="best-price-value">'+fmt(bestVal)+'</div>'
+        + (valid.length > 1 ? '<div class="best-price-store">'+bestStore.icon+' '+bestStore.short+'</div>' : '<div class="best-price-store" style="color:var(--text-muted)">Sin comparar aún</div>')
+      ) : '<div class="best-price-label" style="color:var(--text-muted)">Sin precios aún</div>')
+    + '</div>'
+    + '<div class="card-actions" onclick="event.stopPropagation()">'
+    + '<button class="card-btn" onclick="openEditProduct(\''+p.id+'\')">✏ Editar</button>'
+    + '<button class="card-btn" onclick="openDetailModal(\''+p.id+'\')">Ver detalle</button>'
+    + '</div>'
+    + '</div></div>';
 }
 
 function updateSavingsBar(filtered) {
   const bar = document.getElementById('savings-bar');
-  const counts = {};
-  STORES.forEach(s => counts[s.id] = 0);
+  const counts = {}; STORES.forEach(s => counts[s.id]=0);
   filtered.forEach(p => {
-    const prices = p.prices || {};
-    const valid = STORES.filter(s => (prices[s.id]||0) > 0);
+    const prices=p.prices||{}, offers=p.offers||{};
+    const valid = STORES.filter(s => effectivePrice(prices,offers,s.id)>0);
     if (valid.length < 2) return;
-    const min = valid.reduce((a,b) => prices[a.id] < prices[b.id] ? a : b);
-    counts[min.id]++;
+    const best = valid.reduce((a,b) => effectivePrice(prices,offers,a.id)<effectivePrice(prices,offers,b.id)?a:b);
+    counts[best.id]++;
   });
-  const best = Object.entries(counts).sort((a,b) => b[1]-a[1])[0];
-  if (best && best[1] > 0) {
-    const store = STORES.find(s => s.id === best[0]);
+  const best = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
+  if (best && best[1]>0) {
+    const store = STORES.find(s=>s.id===best[0]);
     bar.classList.add('visible');
-    document.getElementById('savings-text').innerHTML =
-      `${store.icon} <strong>${store.label}</strong> tiene el mejor precio en <strong>${best[1]}</strong> producto${best[1]>1?'s':''} de los comparables`;
-  } else {
-    bar.classList.remove('visible');
-  }
+    document.getElementById('savings-text').innerHTML = store.icon+' <strong>'+store.label+'</strong> tiene el mejor precio en <strong>'+best[1]+'</strong> producto'+(best[1]>1?'s':'')+' de los comparables';
+  } else bar.classList.remove('visible');
 }
 
-// ── MODALS: PRODUCTO ──────────────────────
+// ── MODAL: DETALLE ─────────────────────────
+window.openDetailModal = id => {
+  detailProductId = id;
+  refreshDetailModal();
+  document.getElementById('detail-modal').classList.add('open');
+};
+window.closeDetailModal = () => {
+  document.getElementById('detail-modal').classList.remove('open');
+  detailProductId = null;
+};
+
+function refreshDetailModal() {
+  const p = allProducts.find(x=>x.id===detailProductId); if (!p) return;
+  document.getElementById('detail-name').textContent = p.name;
+
+  // Image
+  const imgWrap = document.getElementById('detail-img-wrap');
+  imgWrap.innerHTML = p.imageUrl
+    ? '<img src="'+esc(p.imageUrl)+'" alt="'+esc(p.name)+'" onerror="this.parentElement.innerHTML=\'<div class=detail-img-placeholder>🛒</div>\'">'
+    : '<div class="detail-img-placeholder">🛒</div>';
+
+  // Prices
+  const prices=p.prices||{}, offers=p.offers||{};
+  const valid = STORES.filter(s=>effectivePrice(prices,offers,s.id)>0);
+  const bestVal = valid.length ? Math.min(...valid.map(s=>effectivePrice(prices,offers,s.id))) : null;
+
+  document.getElementById('detail-prices').innerHTML = STORES.map(s => {
+    const val = prices[s.id]||0;
+    const effVal = effectivePrice(prices,offers,s.id);
+    const isBest = effVal>0 && effVal===bestVal && valid.length>1;
+    const offer = offers[s.id];
+    const hasOffer = offer&&offer.qty>0&&offer.total>0;
+    return '<div class="price-cell '+(isBest?'best-price':'')+(effVal<=0?' no-price':'')+'">'
+      + '<div class="store-name">'+s.icon+' '+s.label+'</div>'
+      + (effVal<=0
+          ? '<div class="price-na">Sin precio</div>'
+          : '<div class="price-value">'+fmt(effVal)+'</div>'
+            + (isBest?'<div class="best-tag">✓ más barato</div>':'')
+            + (hasOffer?'<div class="price-offer">🏷 '+offer.qty+'x'+fmt(offer.total)+'</div>'+'<div class="price-unit">($'+fmt(val)+' c/u normal)</div>':'')
+            + '<div class="price-date">'+fmtDate(p.updatedAt)+'</div>')
+      + '<div class="cell-actions">'
+      + '<button class="edit-price-btn" onclick="openPriceEdit(\''+p.id+'\',\''+s.id+'\',\''+s.label+'\','+val+','+(offer?JSON.stringify(offer).replace(/'/g,"\'"):'null')+')">✏ '+(effVal<=0?'Agregar':'Editar')+'</button>'
+      + '<button class="history-btn" onclick="openHistoryModal(\''+p.id+'\',\''+s.id+'\')">📈</button>'
+      + '</div>'
+      + '</div>';
+  }).join('');
+
+  // Links
+  const links = [];
+  if (p.linkJumbo) links.push('<a href="'+esc(p.linkJumbo)+'" target="_blank"><button class="btn-blue">Jumbo.cl ↗</button></a>');
+  if (p.linkLider) links.push('<a href="'+esc(p.linkLider)+'" target="_blank"><button class="btn-blue">Lider.cl ↗</button></a>');
+  const linksEl = document.getElementById('detail-links');
+  linksEl.innerHTML = links.length ? '<span>Ver online:</span>'+links.join('') : '';
+
+  document.getElementById('detail-edit-btn').onclick = () => { closeDetailModal(); openEditProduct(p.id); };
+  document.getElementById('detail-delete-btn').onclick = () => confirmDelete(p.id, p.name);
+}
+
+// ── MODAL: AGREGAR/EDITAR PRODUCTO ─────────
 window.openAddProduct = () => {
   editingProductId = null;
   document.getElementById('modal-title').textContent = 'Agregar producto';
-  ['prod-name','prod-sku-lider','prod-sku-jumbo','price-jumbo','price-lider','price-mass'].forEach(id => document.getElementById(id).value = '');
+  ['prod-name','prod-img','prod-link-jumbo','prod-link-lider',
+   'price-jumbo','price-lider','price-mass',
+   'offer-qty-jumbo','offer-price-jumbo','offer-qty-lider','offer-price-lider','offer-qty-mass','offer-price-mass'
+  ].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('prod-category').value = 'Otros';
   document.getElementById('product-modal').classList.add('open');
 };
 
 window.openEditProduct = id => {
-  const p = allProducts.find(x => x.id === id);
-  if (!p) return;
+  const p = allProducts.find(x=>x.id===id); if (!p) return;
   editingProductId = id;
   document.getElementById('modal-title').textContent = 'Editar producto';
-  document.getElementById('prod-name').value = p.name;
-  document.getElementById('prod-category').value = p.category || 'Otros';
-  document.getElementById('prod-sku-lider').value = p.skuLider || '';
-  document.getElementById('prod-sku-jumbo').value = p.skuJumbo || '';
-  const prices = p.prices || {};
-  document.getElementById('price-jumbo').value = prices.jumbo > 0 ? prices.jumbo : '';
-  document.getElementById('price-lider').value = prices.lider > 0 ? prices.lider : '';
-  document.getElementById('price-mass').value = prices.mass > 0 ? prices.mass : '';
+  document.getElementById('prod-name').value = p.name||'';
+  document.getElementById('prod-category').value = p.category||'Otros';
+  document.getElementById('prod-img').value = p.imageUrl||'';
+  document.getElementById('prod-link-jumbo').value = p.linkJumbo||'';
+  document.getElementById('prod-link-lider').value = p.linkLider||'';
+  const prices=p.prices||{}, offers=p.offers||{};
+  document.getElementById('price-jumbo').value = prices.jumbo>0?prices.jumbo:'';
+  document.getElementById('price-lider').value = prices.lider>0?prices.lider:'';
+  document.getElementById('price-mass').value = prices.mass>0?prices.mass:'';
+  STORES.forEach(s => {
+    const o = offers[s.id]||{};
+    document.getElementById('offer-qty-'+s.id).value = o.qty||'';
+    document.getElementById('offer-price-'+s.id).value = o.total||'';
+  });
   document.getElementById('product-modal').classList.add('open');
 };
 
@@ -505,225 +602,153 @@ window.closeModal = () => document.getElementById('product-modal').classList.rem
 window.saveProduct = async () => {
   const name = document.getElementById('prod-name').value.trim();
   if (!name) { alert('Escribe el nombre del producto'); return; }
-  const id = editingProductId || Date.now().toString(36) + Math.random().toString(36).slice(2);
-  const existing = allProducts.find(x => x.id === id) || {};
-  const oldPrices = existing.prices || {};
-  const oldHistory = existing.history || {};
+  const id = editingProductId || Date.now().toString(36)+Math.random().toString(36).slice(2);
+  const existing = allProducts.find(x=>x.id===id)||{};
+  const oldPrices = existing.prices||{};
+  const oldHistory = existing.history||{};
   const newPrices = {
-    jumbo: parseFloat(document.getElementById('price-jumbo').value) || 0,
-    lider: parseFloat(document.getElementById('price-lider').value) || 0,
-    mass:  parseFloat(document.getElementById('price-mass').value) || 0,
+    jumbo: parseFloat(document.getElementById('price-jumbo').value)||0,
+    lider: parseFloat(document.getElementById('price-lider').value)||0,
+    mass:  parseFloat(document.getElementById('price-mass').value)||0,
   };
-  // Append to history for changed prices
-  const newHistory = { ...oldHistory };
+  const newOffers = {};
+  STORES.forEach(s => {
+    const qty = parseFloat(document.getElementById('offer-qty-'+s.id).value)||0;
+    const total = parseFloat(document.getElementById('offer-price-'+s.id).value)||0;
+    if (qty>0&&total>0) newOffers[s.id]={qty,total};
+  });
+  const newHistory = {...oldHistory};
   const now = Date.now();
   STORES.forEach(s => {
-    if (newPrices[s.id] > 0 && newPrices[s.id] !== oldPrices[s.id]) {
-      newHistory[s.id] = [...(newHistory[s.id] || []), { price: newPrices[s.id], date: now }];
-    }
+    const ep = effectivePrice(newPrices,newOffers,s.id);
+    const oldEp = effectivePrice(oldPrices,existing.offers||{},s.id);
+    if (ep>0 && ep!==oldEp) newHistory[s.id]=[...(newHistory[s.id]||[]),{price:ep,date:now}];
   });
-  await saveProductToDb({
-    ...existing, id, name,
+  await saveProductToDb({...existing,id,name,
     category: document.getElementById('prod-category').value,
-    skuLider: document.getElementById('prod-sku-lider').value.trim(),
-    skuJumbo: document.getElementById('prod-sku-jumbo').value.trim(),
-    prices: newPrices, history: newHistory, updatedAt: now
+    imageUrl: document.getElementById('prod-img').value.trim(),
+    linkJumbo: document.getElementById('prod-link-jumbo').value.trim(),
+    linkLider: document.getElementById('prod-link-lider').value.trim(),
+    prices:newPrices, offers:newOffers, history:newHistory, updatedAt:now
   });
   closeModal();
 };
 
-window.confirmDelete = (id, name) => {
-  if (confirm(`¿Eliminar "${name}"?`)) deleteProductFromDb(id);
+window.confirmDelete = (id,name) => {
+  if (confirm('¿Eliminar "'+name+'"?')) { deleteProductFromDb(id); closeDetailModal(); }
 };
 
-// ── MODALS: PRECIO INDIVIDUAL ─────────────
-window.openPriceEdit = (productId, storeId, storeLabel, currentVal) => {
-  editingPriceCtx = { productId, storeId };
+// ── MODAL: PRECIO INDIVIDUAL ───────────────
+window.openPriceEdit = (productId, storeId, storeLabel, currentVal, currentOffer) => {
+  editingPriceCtx = {productId, storeId};
   document.getElementById('price-modal-title').textContent = 'Actualizar precio';
   document.getElementById('price-modal-subtitle').textContent = storeLabel;
-  document.getElementById('single-price-input').value = currentVal > 0 ? currentVal : '';
-  // Show SKU hint if available
-  const p = allProducts.find(x => x.id === productId);
-  const sku = storeId === 'lider' ? p?.skuLider : storeId === 'jumbo' ? p?.skuJumbo : null;
+  document.getElementById('single-price-input').value = currentVal>0?currentVal:'';
+  document.getElementById('single-offer-qty').value = currentOffer?.qty||'';
+  document.getElementById('single-offer-price').value = currentOffer?.total||'';
+  const p = allProducts.find(x=>x.id===productId);
+  const link = storeId==='lider'?p?.linkLider:storeId==='jumbo'?p?.linkJumbo:null;
   const hint = document.getElementById('price-modal-hint');
-  if (sku) {
-    const url = storeId === 'lider'
-      ? `https://super.lider.cl/product/sku/${sku}`
-      : `https://www.jumbo.cl/product/sku/${sku}`;
-    hint.innerHTML = `<a href="${url}" target="_blank" style="color:var(--blue)">Abrir producto en ${storeId === 'lider' ? 'Lider.cl' : 'Jumbo.cl'} ↗</a>`;
-  } else {
-    hint.innerHTML = '';
-  }
+  hint.innerHTML = link ? '<a href="'+link+'" target="_blank" style="color:var(--blue)">Abrir producto en '+(storeId==='lider'?'Lider.cl':'Jumbo.cl')+' ↗</a>' : '';
   document.getElementById('price-modal').classList.add('open');
 };
-
 window.closePriceModal = () => document.getElementById('price-modal').classList.remove('open');
 
 window.saveSinglePrice = async () => {
   if (!editingPriceCtx) return;
-  const { productId, storeId } = editingPriceCtx;
-  const val = parseFloat(document.getElementById('single-price-input').value) || 0;
-  const p = allProducts.find(x => x.id === productId);
-  if (!p) return;
-  const oldVal = (p.prices || {})[storeId] || 0;
-  const prices = { ...(p.prices||{}), [storeId]: val };
-  const history = { ...(p.history||{}) };
+  const {productId,storeId} = editingPriceCtx;
+  const val = parseFloat(document.getElementById('single-price-input').value)||0;
+  const qty = parseFloat(document.getElementById('single-offer-qty').value)||0;
+  const total = parseFloat(document.getElementById('single-offer-price').value)||0;
+  const p = allProducts.find(x=>x.id===productId); if (!p) return;
+  const prices = {...(p.prices||{}),[storeId]:val};
+  const offers = {...(p.offers||{})};
+  if (qty>0&&total>0) offers[storeId]={qty,total}; else delete offers[storeId];
+  const history = {...(p.history||{})};
   const now = Date.now();
-  if (val > 0 && val !== oldVal) {
-    history[storeId] = [...(history[storeId]||[]), { price: val, date: now }];
-  }
-  await saveProductToDb({ ...p, prices, history, updatedAt: now });
+  const newEff = effectivePrice(prices,offers,storeId);
+  const oldEff = effectivePrice(p.prices||{},p.offers||{},storeId);
+  if (newEff>0&&newEff!==oldEff) history[storeId]=[...(history[storeId]||[]),{price:newEff,date:now}];
+  await saveProductToDb({...p,prices,offers,history,updatedAt:now});
   closePriceModal();
 };
 
 window.clearPrice = async () => {
   if (!editingPriceCtx) return;
-  const { productId, storeId } = editingPriceCtx;
-  const p = allProducts.find(x => x.id === productId);
-  if (!p) return;
-  const prices = { ...(p.prices||{}), [storeId]: 0 };
-  await saveProductToDb({ ...p, prices, updatedAt: Date.now() });
+  const {productId,storeId} = editingPriceCtx;
+  const p = allProducts.find(x=>x.id===productId); if (!p) return;
+  const prices = {...(p.prices||{}),[storeId]:0};
+  const offers = {...(p.offers||{})}; delete offers[storeId];
+  await saveProductToDb({...p,prices,offers,updatedAt:Date.now()});
   closePriceModal();
 };
 
 // ── MODAL: HISTORIAL ──────────────────────
-window.openHistoryModal = (productId, storeId) => {
-  historyProductId = productId;
-  historyActiveStore = storeId || 'jumbo';
+window.openHistoryModal = (productId,storeId) => {
+  historyProductId=productId; historyActiveStore=storeId||'jumbo';
   refreshHistoryModal();
   document.getElementById('history-modal').classList.add('open');
 };
-
 window.closeHistoryModal = () => {
   document.getElementById('history-modal').classList.remove('open');
-  historyProductId = null;
-  if (historyChart) { historyChart.destroy(); historyChart = null; }
+  historyProductId=null;
+  if (historyChart){historyChart.destroy();historyChart=null;}
 };
-
-window.switchHistoryStore = storeId => {
-  historyActiveStore = storeId;
-  refreshHistoryModal();
-};
+window.switchHistoryStore = sid => { historyActiveStore=sid; refreshHistoryModal(); };
 
 function refreshHistoryModal() {
-  const p = allProducts.find(x => x.id === historyProductId);
-  if (!p) return;
-  document.getElementById('history-modal-title').textContent = p.name;
-
-  // Store tabs
-  document.getElementById('history-store-tabs').innerHTML = STORES.map(s =>
-    `<button class="history-store-tab ${s.id===historyActiveStore?'active':''}" onclick="switchHistoryStore('${s.id}')">${s.icon} ${s.label.split(' ')[0]}</button>`
+  const p=allProducts.find(x=>x.id===historyProductId); if(!p) return;
+  document.getElementById('history-modal-title').textContent=p.name;
+  document.getElementById('history-store-tabs').innerHTML=STORES.map(s=>
+    '<button class="history-store-tab '+(s.id===historyActiveStore?'active':'')+'" onclick="switchHistoryStore(\''+s.id+'\')">'+s.icon+' '+s.short+'</button>'
   ).join('');
-
-  const store = STORES.find(s => s.id === historyActiveStore);
-  const hist = (p.history || {})[historyActiveStore] || [];
-
-  if (hist.length === 0) {
-    // Destroy old chart
-    if (historyChart) { historyChart.destroy(); historyChart = null; }
-    document.getElementById('history-table-wrap').innerHTML =
-      `<div class="no-history">Sin historial para ${store.label}.<br>Edita el precio para empezar a registrar.</div>`;
+  const store=STORES.find(s=>s.id===historyActiveStore);
+  const hist=(p.history||{})[historyActiveStore]||[];
+  if(historyChart){historyChart.destroy();historyChart=null;}
+  if(!hist.length){
+    document.getElementById('history-table-wrap').innerHTML='<div class="no-history">Sin historial para '+store.label+'.<br>Edita el precio para empezar a registrar.</div>';
     return;
   }
-
-  // Chart
-  const labels = hist.map(h => fmtDateShort(h.date));
-  const data = hist.map(h => h.price);
-
-  if (historyChart) { historyChart.destroy(); historyChart = null; }
-  const ctx = document.getElementById('history-chart').getContext('2d');
-  historyChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        label: store.label,
-        data,
-        borderColor: store.color,
-        backgroundColor: store.color + '22',
-        pointBackgroundColor: store.color,
-        pointRadius: 5,
-        pointHoverRadius: 7,
-        tension: 0.3,
-        fill: true,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          callbacks: {
-            label: ctx => '$' + Math.round(ctx.parsed.y).toLocaleString('es-CL')
-          }
-        }
-      },
-      scales: {
-        y: {
-          ticks: {
-            callback: v => '$' + Math.round(v).toLocaleString('es-CL'),
-            font: { size: 11 }
-          },
-          grid: { color: 'rgba(0,0,0,0.06)' }
-        },
-        x: { ticks: { font: { size: 11 } } }
-      }
-    }
-  });
-
-  // Table
-  const rows = [...hist].reverse().map(h =>
-    `<tr><td>${fmtDateFull(h.date)}</td><td style="text-align:right;font-weight:600">${fmt(h.price)}</td></tr>`
-  ).join('');
-  document.getElementById('history-table-wrap').innerHTML =
-    `<table class="history-table">
-      <thead><tr><th>Fecha</th><th style="text-align:right">Precio</th></tr></thead>
-      <tbody>${rows}</tbody>
-    </table>`;
+  const ctx=document.getElementById('history-chart').getContext('2d');
+  historyChart=new Chart(ctx,{type:'line',data:{
+    labels:hist.map(h=>fmtDateShort(h.date)),
+    datasets:[{label:store.label,data:hist.map(h=>h.price),borderColor:store.color,backgroundColor:store.color+'22',pointBackgroundColor:store.color,pointRadius:5,pointHoverRadius:7,tension:0.3,fill:true}]
+  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+Math.round(c.parsed.y).toLocaleString('es-CL')}}},scales:{y:{ticks:{callback:v=>'$'+Math.round(v).toLocaleString('es-CL'),font:{size:11},color:'#888780'},grid:{color:'rgba(255,255,255,0.06)'}},x:{ticks:{font:{size:11},color:'#888780'},grid:{color:'rgba(255,255,255,0.04)'}}}}});
+  document.getElementById('history-table-wrap').innerHTML='<table class="history-table"><thead><tr><th>Fecha</th><th style="text-align:right">Precio</th></tr></thead><tbody>'
+    +[...hist].reverse().map(h=>'<tr><td>'+fmtDateFull(h.date)+'</td><td style="text-align:right;font-weight:600">'+fmt(h.price)+'</td></tr>').join('')
+    +'</tbody></table>';
 }
 
 // ── SEARCH + TABS ─────────────────────────
 window.filterProducts = () => renderProducts();
 window.switchTab = tab => {
-  currentTab = tab;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  const map = { all:'tab-all','Lácteos':'tab-lacteos','Panadería':'tab-panaderia','Carnes':'tab-carnes','Verduras':'tab-verduras','Otros':'tab-otros' };
+  currentTab=tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  const map={all:'tab-all','Lácteos':'tab-lacteos','Panadería':'tab-panaderia','Carnes':'tab-carnes','Verduras':'tab-verduras','Dulces':'tab-dulces','Galletas':'tab-galletas','Otros':'tab-otros'};
   document.getElementById(map[tab])?.classList.add('active');
   renderProducts();
 };
 
-// Close modals on overlay click
-['product-modal','price-modal','history-modal'].forEach(id => {
-  document.getElementById(id).addEventListener('click', e => {
-    if (e.target.id === id) {
-      if (id === 'history-modal') closeHistoryModal();
-      else if (id === 'price-modal') closePriceModal();
+// Close on overlay click
+['product-modal','detail-modal','price-modal','history-modal'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',e=>{
+    if(e.target.id===id){
+      if(id==='history-modal') closeHistoryModal();
+      else if(id==='price-modal') closePriceModal();
+      else if(id==='detail-modal') closeDetailModal();
       else closeModal();
     }
   });
 });
 
 // ── UTILS ─────────────────────────────────
-function fmt(n) { return '$' + Math.round(n).toLocaleString('es-CL'); }
-function fmtDate(ts) {
-  if (!ts) return '';
-  const d = new Date(ts);
-  return d.toLocaleDateString('es-CL', { day:'numeric', month:'short' });
-}
-function fmtDateShort(ts) {
-  const d = new Date(ts);
-  return d.toLocaleDateString('es-CL', { day:'numeric', month:'short' });
-}
-function fmtDateFull(ts) {
-  const d = new Date(ts);
-  return d.toLocaleDateString('es-CL', { day:'numeric', month:'long', year:'numeric' });
-}
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function fmt(n){return '$'+Math.round(n).toLocaleString('es-CL');}
+function fmtDate(ts){if(!ts)return'';return new Date(ts).toLocaleDateString('es-CL',{day:'numeric',month:'short'});}
+function fmtDateShort(ts){return new Date(ts).toLocaleDateString('es-CL',{day:'numeric',month:'short'});}
+function fmtDateFull(ts){return new Date(ts).toLocaleDateString('es-CL',{day:'numeric',month:'long',year:'numeric'});}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
-document.getElementById('product-list').innerHTML = '<div class="loading">Iniciando...</div>';
+document.getElementById('product-list').innerHTML='<div class="loading">Iniciando...</div>';
 </script>
 </body>
 </html>
