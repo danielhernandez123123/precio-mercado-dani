@@ -20,15 +20,9 @@ for user_doc in db.collection("users").list_documents():
         user_doc.collection("products").stream()
     )
 
-    print("Productos:", len(products))
-
     for p in products:
         data = p.to_dict()
 
-        print(
-            data.get("name"),
-            "| Jumbo:",
-            data.get("skuJumbo"),
-            "| Lider:",
-            data.get("skuLider")
-        )
+        print("\nPRODUCTO:", data.get("name"))
+        print("JUMBO :", data.get("linkJumbo"))
+        print("LIDER :", data.get("linkLider"))
