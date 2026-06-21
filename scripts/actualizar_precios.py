@@ -71,7 +71,6 @@ def obtener_precio_lider(url):
 # ==========================================
 # SCRAPER JUMBO
 # ==========================================
-
 def obtener_precio_jumbo(url):
 
     try:
@@ -117,8 +116,26 @@ def obtener_precio_jumbo(url):
             print(f"Jumbo método 3: {precio}")
             return precio
 
+        print("\n==============================")
         print("NO SE ENCONTRÓ PRECIO EN JUMBO")
         print(url)
+
+        idx = html.lower().find("price")
+
+        if idx != -1:
+
+            inicio = max(0, idx - 500)
+            fin = min(len(html), idx + 2000)
+
+            print("\n===== FRAGMENTO HTML =====\n")
+            print(html[inicio:fin])
+
+        else:
+
+            print("\n===== NO APARECE 'price' =====\n")
+            print(html[:3000])
+
+        print("\n==============================")
 
         return None
 
@@ -126,7 +143,6 @@ def obtener_precio_jumbo(url):
 
         print("Error Jumbo:", e)
         return None
-
 
 # ==========================================
 # HISTORIAL
