@@ -3,400 +3,155 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PrecioMercado — Compara tus supermercados</title>
+<title>PrecioMercado</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #1D9E75; --green-light: #E1F5EE; --green-dark: #085041;
+  --amber: #BA7517; --amber-light: #FAEEDA;
+  --red: #A32D2D; --red-light: #FCEBEB;
+  --blue: #185FA5; --blue-light: #E6F1FB;
+  --gray: #5F5E5A; --gray-light: #F1EFE8;
+  --text: #2C2C2A; --text-muted: #888780;
+  --border: rgba(0,0,0,0.12);
+  --surface: #fff; --bg: #F7F6F2;
+  --radius: 12px; --radius-sm: 8px;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: 15px; line-height: 1.5; }
 
-  :root {
-    --green: #1D9E75;
-    --green-light: #E1F5EE;
-    --green-dark: #085041;
-    --amber: #BA7517;
-    --amber-light: #FAEEDA;
-    --red: #A32D2D;
-    --red-light: #FCEBEB;
-    --gray: #5F5E5A;
-    --gray-light: #F1EFE8;
-    --text: #2C2C2A;
-    --text-muted: #888780;
-    --border: rgba(0,0,0,0.12);
-    --surface: #fff;
-    --bg: #F7F6F2;
-    --radius: 12px;
-    --radius-sm: 8px;
-  }
+/* NAV */
+nav { background: var(--surface); border-bottom: 0.5px solid var(--border); padding: 0 1.25rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 100; }
+.logo { font-size: 17px; font-weight: 600; color: var(--green-dark); display: flex; align-items: center; gap: 8px; }
+.logo-icon { font-size: 22px; }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+.user-chip { display: flex; align-items: center; gap: 8px; background: var(--gray-light); border-radius: 20px; padding: 4px 12px 4px 4px; font-size: 13px; }
+.avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--green); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; overflow: hidden; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 15px;
-    line-height: 1.5;
-  }
+/* BUTTONS */
+.btn { padding: 7px 16px; border-radius: var(--radius-sm); border: 0.5px solid var(--border); background: var(--surface); font-size: 14px; cursor: pointer; color: var(--text); transition: background 0.15s; }
+.btn:hover { background: var(--gray-light); }
+.btn-primary { background: var(--green); color: #fff; border-color: var(--green); }
+.btn-primary:hover { background: var(--green-dark); }
+.btn-sm { padding: 5px 12px; font-size: 13px; }
+.btn-danger { color: var(--red); border-color: var(--red-light); }
+.btn-danger:hover { background: var(--red-light); }
+.btn-blue { background: var(--blue); color: #fff; border-color: var(--blue); font-size: 12px; padding: 4px 10px; }
+.btn-blue:hover { background: #0C447C; }
 
-  /* NAV */
-  nav {
-    background: var(--surface);
-    border-bottom: 0.5px solid var(--border);
-    padding: 0 1.25rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 56px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .logo {
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--green-dark);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .logo-icon { font-size: 22px; }
-  .nav-right { display: flex; align-items: center; gap: 10px; }
-  .user-chip {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--gray-light);
-    border-radius: 20px;
-    padding: 4px 12px 4px 4px;
-    font-size: 13px;
-    color: var(--text);
-  }
-  .avatar {
-    width: 28px; height: 28px;
-    border-radius: 50%;
-    background: var(--green);
-    color: #fff;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 600;
-    overflow: hidden;
-  }
-  .avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .btn {
-    padding: 7px 16px;
-    border-radius: var(--radius-sm);
-    border: 0.5px solid var(--border);
-    background: var(--surface);
-    font-size: 14px;
-    cursor: pointer;
-    color: var(--text);
-    transition: background 0.15s;
-  }
-  .btn:hover { background: var(--gray-light); }
-  .btn-primary {
-    background: var(--green);
-    color: #fff;
-    border-color: var(--green);
-  }
-  .btn-primary:hover { background: var(--green-dark); }
-  .btn-sm { padding: 5px 12px; font-size: 13px; }
-  .btn-danger { color: var(--red); border-color: var(--red-light); }
-  .btn-danger:hover { background: var(--red-light); }
+/* LOGIN */
+#login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: calc(100vh - 56px); padding: 2rem; text-align: center; }
+.login-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 2.5rem 2rem; max-width: 360px; width: 100%; }
+.login-card h2 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
+.login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 1.5rem; }
+.btn-google { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 10px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); font-size: 15px; cursor: pointer; transition: background 0.15s; }
+.btn-google:hover { background: var(--gray-light); }
 
-  /* LOGIN SCREEN */
-  #login-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: calc(100vh - 56px);
-    padding: 2rem;
-    text-align: center;
-  }
-  .login-card {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 2.5rem 2rem;
-    max-width: 360px;
-    width: 100%;
-  }
-  .login-card h2 { font-size: 20px; font-weight: 600; margin-bottom: 8px; }
-  .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 1.5rem; }
-  .btn-google {
-    display: flex; align-items: center; justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 10px;
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--surface);
-    font-size: 15px;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .btn-google:hover { background: var(--gray-light); }
-  .google-logo { width: 20px; height: 20px; }
+/* MAIN */
+#app { display: none; }
+.container { max-width: 920px; margin: 0 auto; padding: 1.5rem 1rem; }
 
-  /* MAIN APP */
-  #app { display: none; }
-  .container { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem; }
+/* SEARCH */
+.search-wrap { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+.search-input { flex: 1; padding: 10px 14px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); font-size: 15px; background: var(--surface); color: var(--text); outline: none; }
+.search-input:focus { border-color: var(--green); }
 
-  /* SEARCH */
-  .search-wrap {
-    display: flex; gap: 8px; margin-bottom: 1.5rem;
-  }
-  .search-input {
-    flex: 1;
-    padding: 10px 14px;
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 15px;
-    background: var(--surface);
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .search-input:focus { border-color: var(--green); }
+/* TABS */
+.tabs { display: flex; gap: 4px; margin-bottom: 1.5rem; background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 4px; overflow-x: auto; }
+.tab { flex: 1; min-width: 70px; padding: 7px; text-align: center; font-size: 13px; border-radius: 6px; cursor: pointer; color: var(--text-muted); border: none; background: none; white-space: nowrap; }
+.tab.active { background: var(--green); color: #fff; font-weight: 500; }
 
-  /* SECTION HEADER */
-  .section-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 12px;
-  }
-  .section-title { font-size: 16px; font-weight: 600; color: var(--text); }
-  .count-badge {
-    background: var(--gray-light);
-    color: var(--gray);
-    font-size: 12px;
-    padding: 2px 8px;
-    border-radius: 10px;
-  }
+/* SAVINGS BAR */
+.savings-bar { background: var(--green-light); border: 0.5px solid var(--green); border-radius: var(--radius-sm); padding: 10px 16px; margin-bottom: 1.5rem; display: none; }
+.savings-bar.visible { display: block; }
+.savings-bar p { font-size: 13px; color: var(--green-dark); }
 
-  /* PRODUCT CARD */
-  .product-card {
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem 1.25rem;
-    margin-bottom: 10px;
-    transition: box-shadow 0.15s;
-  }
-  .product-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-  .product-header {
-    display: flex; align-items: flex-start;
-    justify-content: space-between; gap: 8px;
-    margin-bottom: 10px;
-  }
-  .product-name { font-weight: 600; font-size: 15px; }
-  .product-category {
-    font-size: 12px; color: var(--text-muted);
-    background: var(--gray-light);
-    padding: 2px 8px; border-radius: 10px;
-    white-space: nowrap;
-  }
-  .product-actions { display: flex; gap: 6px; flex-shrink: 0; }
+/* SECTION HEADER */
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.section-title { font-size: 16px; font-weight: 600; }
+.count-badge { background: var(--gray-light); color: var(--gray); font-size: 12px; padding: 2px 8px; border-radius: 10px; }
 
-  /* PRICES GRID */
-  .prices-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-  .price-cell {
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 8px 10px;
-    position: relative;
-  }
-  .price-cell.best-price {
-    border-color: var(--green);
-    background: var(--green-light);
-  }
-  .price-cell.no-price { opacity: 0.45; }
-  .store-name {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-bottom: 3px;
-    font-weight: 500;
-  }
-  .price-value {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text);
-  }
-  .price-cell.best-price .price-value { color: var(--green-dark); }
-  .price-cell.best-price::after {
-    content: '✓ más barato';
-    position: absolute;
-    top: 6px; right: 8px;
-    font-size: 10px;
-    color: var(--green);
-    font-weight: 600;
-  }
-  .price-date {
-    font-size: 11px;
-    color: var(--text-muted);
-    margin-top: 2px;
-  }
-  .price-na {
-    font-size: 14px;
-    color: var(--text-muted);
-  }
-  .edit-price-btn {
-    display: block;
-    width: 100%;
-    margin-top: 6px;
-    padding: 3px;
-    font-size: 11px;
-    text-align: center;
-    border: 0.5px dashed var(--border);
-    border-radius: 5px;
-    background: none;
-    cursor: pointer;
-    color: var(--text-muted);
-    transition: background 0.1s, color 0.1s;
-  }
-  .edit-price-btn:hover { background: var(--gray-light); color: var(--text); }
+/* PRODUCT CARD */
+.product-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1rem 1.25rem; margin-bottom: 10px; transition: box-shadow 0.15s; }
+.product-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.product-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+.product-name { font-weight: 600; font-size: 15px; }
+.product-meta { display: flex; align-items: center; gap: 6px; margin-top: 3px; flex-wrap: wrap; }
+.product-category { font-size: 12px; color: var(--text-muted); background: var(--gray-light); padding: 2px 8px; border-radius: 10px; }
+.sku-tag { font-size: 11px; color: var(--blue); background: var(--blue-light); padding: 2px 8px; border-radius: 10px; font-family: monospace; }
+.product-actions { display: flex; gap: 6px; flex-shrink: 0; }
 
-  /* EMPTY STATE */
-  .empty-state {
-    text-align: center;
-    padding: 3rem 1rem;
-    color: var(--text-muted);
-  }
-  .empty-state p { margin-bottom: 1rem; }
+/* PRICES GRID */
+.prices-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.price-cell { border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 10px; position: relative; }
+.price-cell.best-price { border-color: var(--green); background: var(--green-light); }
+.price-cell.no-price { opacity: 0.45; }
+.store-name { font-size: 11px; color: var(--text-muted); margin-bottom: 3px; font-weight: 500; }
+.price-value { font-size: 18px; font-weight: 600; }
+.price-cell.best-price .price-value { color: var(--green-dark); }
+.best-label { font-size: 10px; color: var(--green); font-weight: 600; margin-top: 1px; }
+.price-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+.price-na { font-size: 14px; color: var(--text-muted); }
+.cell-actions { display: flex; gap: 4px; margin-top: 6px; }
+.edit-price-btn { flex: 1; padding: 3px; font-size: 11px; text-align: center; border: 0.5px dashed var(--border); border-radius: 5px; background: none; cursor: pointer; color: var(--text-muted); transition: background 0.1s; }
+.edit-price-btn:hover { background: var(--gray-light); color: var(--text); }
+.history-btn { padding: 3px 6px; font-size: 11px; border: 0.5px solid var(--border); border-radius: 5px; background: none; cursor: pointer; color: var(--text-muted); transition: background 0.1s; }
+.history-btn:hover { background: var(--blue-light); color: var(--blue); }
 
-  /* MODAL */
-  .modal-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 200;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: var(--surface);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    width: 100%; max-width: 420px;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  .modal h3 { font-size: 17px; font-weight: 600; margin-bottom: 1rem; }
-  .form-group { margin-bottom: 14px; }
-  .form-group label {
-    display: block; font-size: 13px;
-    color: var(--text-muted); margin-bottom: 5px;
-  }
-  .form-control {
-    width: 100%;
-    padding: 8px 12px;
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    background: var(--surface);
-    color: var(--text);
-    outline: none;
-  }
-  .form-control:focus { border-color: var(--green); }
-  .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1rem; }
+/* SKU LINKS ROW */
+.sku-links { display: flex; gap: 6px; margin-top: 8px; padding-top: 8px; border-top: 0.5px solid var(--border); flex-wrap: wrap; align-items: center; }
+.sku-links span { font-size: 12px; color: var(--text-muted); }
 
-  /* PRICES FORM IN MODAL */
-  .store-prices-section { margin-top: 1rem; }
-  .store-prices-section h4 {
-    font-size: 13px; font-weight: 600;
-    color: var(--text-muted);
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-  .store-price-row {
-    display: flex; align-items: center; gap: 8px;
-    margin-bottom: 8px;
-  }
-  .store-price-row label {
-    font-size: 13px; width: 140px; flex-shrink: 0;
-    color: var(--text);
-  }
-  .price-input-wrap {
-    flex: 1; position: relative;
-  }
-  .price-input-wrap span {
-    position: absolute; left: 10px; top: 50%;
-    transform: translateY(-50%);
-    font-size: 14px; color: var(--text-muted);
-  }
-  .price-input-wrap input {
-    width: 100%; padding: 7px 10px 7px 22px;
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    background: var(--surface);
-    color: var(--text);
-    outline: none;
-  }
-  .price-input-wrap input:focus { border-color: var(--green); }
+/* EMPTY */
+.empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+.empty-state p { margin-bottom: 1rem; }
+.loading { display: flex; align-items: center; justify-content: center; padding: 3rem; color: var(--text-muted); font-size: 14px; }
 
-  /* LOADING */
-  .loading {
-    display: flex; align-items: center; justify-content: center;
-    padding: 3rem; color: var(--text-muted); font-size: 14px;
-  }
+/* MODAL */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--surface); border-radius: var(--radius); padding: 1.5rem; width: 100%; max-width: 440px; max-height: 92vh; overflow-y: auto; }
+.modal h3 { font-size: 17px; font-weight: 600; margin-bottom: 1rem; }
+.form-group { margin-bottom: 14px; }
+.form-group label { display: block; font-size: 13px; color: var(--text-muted); margin-bottom: 5px; }
+.form-control { width: 100%; padding: 8px 12px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; background: var(--surface); color: var(--text); outline: none; }
+.form-control:focus { border-color: var(--green); }
+.form-hint { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1rem; }
+.store-prices-section { margin-top: 1rem; }
+.store-prices-section h4 { font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+.store-price-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.store-price-row label { font-size: 13px; width: 150px; flex-shrink: 0; }
+.price-input-wrap { flex: 1; position: relative; }
+.price-input-wrap span { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--text-muted); }
+.price-input-wrap input { width: 100%; padding: 7px 10px 7px 22px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; background: var(--surface); color: var(--text); outline: none; }
+.price-input-wrap input:focus { border-color: var(--green); }
 
-  /* TABS */
-  .tabs {
-    display: flex; gap: 4px; margin-bottom: 1.5rem;
-    background: var(--surface);
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 4px;
-  }
-  .tab {
-    flex: 1; padding: 7px;
-    text-align: center; font-size: 13px;
-    border-radius: 6px; cursor: pointer;
-    color: var(--text-muted); border: none; background: none;
-    transition: background 0.15s, color 0.15s;
-  }
-  .tab.active {
-    background: var(--green);
-    color: #fff; font-weight: 500;
-  }
+/* HISTORY MODAL */
+.history-modal { max-width: 600px; }
+.history-store-tabs { display: flex; gap: 4px; margin-bottom: 1rem; }
+.history-store-tab { flex: 1; padding: 6px; text-align: center; font-size: 12px; border-radius: 6px; cursor: pointer; border: 0.5px solid var(--border); background: var(--surface); color: var(--text-muted); }
+.history-store-tab.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+.chart-wrap { position: relative; height: 220px; margin-bottom: 1rem; }
+.history-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.history-table th { text-align: left; padding: 6px 8px; color: var(--text-muted); font-weight: 500; border-bottom: 0.5px solid var(--border); }
+.history-table td { padding: 6px 8px; border-bottom: 0.5px solid var(--border); }
+.history-table tr:last-child td { border-bottom: none; }
+.no-history { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 14px; }
 
-  /* SAVINGS SUMMARY */
-  .savings-bar {
-    background: var(--green-light);
-    border: 0.5px solid var(--green);
-    border-radius: var(--radius-sm);
-    padding: 10px 16px;
-    margin-bottom: 1.5rem;
-    display: none;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .savings-bar.visible { display: flex; }
-  .savings-bar p { font-size: 13px; color: var(--green-dark); }
-  .savings-bar strong { font-weight: 600; }
-
-  @media (max-width: 600px) {
-    .prices-grid { grid-template-columns: 1fr; }
-    .price-cell.best-price::after { display: none; }
-    nav { padding: 0 1rem; }
-    .user-name-nav { display: none; }
-  }
+@media (max-width: 600px) {
+  .prices-grid { grid-template-columns: 1fr; }
+  .user-name-nav { display: none; }
+  nav { padding: 0 1rem; }
+}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <div class="logo">
-    <span class="logo-icon">🛒</span>
-    PrecioMercado
-  </div>
-  <div class="nav-right" id="nav-right">
+  <div class="logo"><span class="logo-icon">🛒</span> PrecioMercado</div>
+  <div class="nav-right">
     <div class="user-chip" id="user-chip" style="display:none">
       <div class="avatar" id="user-avatar">?</div>
       <span class="user-name-nav" id="user-name-nav"></span>
@@ -405,14 +160,14 @@
   </div>
 </nav>
 
-<!-- LOGIN SCREEN -->
+<!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
     <div style="font-size:40px;margin-bottom:12px">🛒</div>
     <h2>PrecioMercado</h2>
     <p>Compara precios en Jumbo Portal Ñuñoa, Líder Av. Vespucio y Mass Av. Vespucio</p>
     <button class="btn-google" onclick="loginGoogle()">
-      <svg class="google-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <svg width="20" height="20" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
         <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
         <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
@@ -424,45 +179,27 @@
   </div>
 </div>
 
-<!-- MAIN APP -->
+<!-- APP -->
 <div id="app">
   <div class="container">
-
-    <!-- SEARCH + ADD -->
     <div class="search-wrap">
-      <input
-        type="search"
-        class="search-input"
-        id="search-input"
-        placeholder="Buscar producto... (ej: leche, pan, arroz)"
-        oninput="filterProducts()"
-      >
+      <input type="search" class="search-input" id="search-input" placeholder="Buscar producto..." oninput="filterProducts()">
       <button class="btn btn-primary" onclick="openAddProduct()">+ Agregar</button>
     </div>
-
-    <!-- TABS -->
     <div class="tabs">
       <button class="tab active" id="tab-all" onclick="switchTab('all')">Todos</button>
       <button class="tab" id="tab-lacteos" onclick="switchTab('Lácteos')">Lácteos</button>
       <button class="tab" id="tab-panaderia" onclick="switchTab('Panadería')">Panadería</button>
       <button class="tab" id="tab-carnes" onclick="switchTab('Carnes')">Carnes</button>
+      <button class="tab" id="tab-verduras" onclick="switchTab('Verduras')">Verduras</button>
       <button class="tab" id="tab-otros" onclick="switchTab('Otros')">Otros</button>
     </div>
-
-    <!-- SAVINGS SUMMARY -->
-    <div class="savings-bar" id="savings-bar">
-      <p id="savings-text"></p>
-    </div>
-
-    <!-- PRODUCT LIST -->
+    <div class="savings-bar" id="savings-bar"><p id="savings-text"></p></div>
     <div class="section-header">
       <span class="section-title">Productos</span>
       <span class="count-badge" id="product-count">0</span>
     </div>
-    <div id="product-list">
-      <div class="loading">Cargando productos...</div>
-    </div>
-
+    <div id="product-list"><div class="loading">Cargando...</div></div>
   </div>
 </div>
 
@@ -477,43 +214,37 @@
     <div class="form-group">
       <label>Categoría</label>
       <select class="form-control" id="prod-category">
-        <option>Lácteos</option>
-        <option>Panadería</option>
-        <option>Carnes</option>
-        <option>Verduras y frutas</option>
-        <option>Bebidas</option>
-        <option>Limpieza</option>
-        <option>Higiene</option>
-        <option>Otros</option>
+        <option>Lácteos</option><option>Panadería</option><option>Carnes</option>
+        <option>Verduras</option><option>Bebidas</option><option>Limpieza</option>
+        <option>Higiene</option><option>Otros</option>
       </select>
     </div>
-
+    <div class="form-group">
+      <label>SKU Líder (opcional)</label>
+      <input class="form-control" id="prod-sku-lider" placeholder="Ej: 00750100">
+      <p class="form-hint">El SKU aparece en la URL del producto en lider.cl</p>
+    </div>
+    <div class="form-group">
+      <label>SKU Jumbo (opcional)</label>
+      <input class="form-control" id="prod-sku-jumbo" placeholder="Ej: 7802900522219">
+      <p class="form-hint">El SKU aparece en la URL del producto en jumbo.cl</p>
+    </div>
     <div class="store-prices-section">
       <h4>Precios actuales</h4>
       <div class="store-price-row">
         <label>🏬 Jumbo Portal Ñuñoa</label>
-        <div class="price-input-wrap">
-          <span>$</span>
-          <input type="number" id="price-jumbo" placeholder="0">
-        </div>
+        <div class="price-input-wrap"><span>$</span><input type="number" id="price-jumbo" placeholder="0"></div>
       </div>
       <div class="store-price-row">
         <label>🏬 Líder Av. Vespucio</label>
-        <div class="price-input-wrap">
-          <span>$</span>
-          <input type="number" id="price-lider" placeholder="0">
-        </div>
+        <div class="price-input-wrap"><span>$</span><input type="number" id="price-lider" placeholder="0"></div>
       </div>
       <div class="store-price-row">
         <label>🏪 Mass Av. Vespucio</label>
-        <div class="price-input-wrap">
-          <span>$</span>
-          <input type="number" id="price-mass" placeholder="0">
-        </div>
+        <div class="price-input-wrap"><span>$</span><input type="number" id="price-mass" placeholder="0"></div>
       </div>
-      <p style="font-size:12px;color:var(--text-muted);margin-top:8px">Deja en 0 si no tienes el precio todavía</p>
+      <p class="form-hint">Deja en 0 si no tienes el precio todavía</p>
     </div>
-
     <div class="modal-footer">
       <button class="btn" onclick="closeModal()">Cancelar</button>
       <button class="btn btn-primary" onclick="saveProduct()">Guardar</button>
@@ -533,6 +264,7 @@
         <input type="number" id="single-price-input" class="form-control" style="padding-left:22px">
       </div>
     </div>
+    <p class="form-hint" id="price-modal-hint"></p>
     <div class="modal-footer">
       <button class="btn btn-danger btn-sm" onclick="clearPrice()">Borrar precio</button>
       <button class="btn" onclick="closePriceModal()">Cancelar</button>
@@ -541,7 +273,19 @@
   </div>
 </div>
 
-<!-- FIREBASE SDK -->
+<!-- MODAL: HISTORIAL -->
+<div class="modal-overlay" id="history-modal">
+  <div class="modal history-modal">
+    <h3 id="history-modal-title">Historial de precios</h3>
+    <div class="history-store-tabs" id="history-store-tabs"></div>
+    <div class="chart-wrap"><canvas id="history-chart"></canvas></div>
+    <div id="history-table-wrap"></div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeHistoryModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
@@ -551,7 +295,6 @@ import { getFirestore, collection, doc, setDoc, deleteDoc, onSnapshot, query }
 
 // ==========================================
 // 🔧 CONFIGURACIÓN FIREBASE
-// Reemplaza estos valores con los tuyos de Firebase Console
 // ==========================================
 const firebaseConfig = {
   apiKey: "AIzaSyBU9i_M6Z0HuzSyN-RahiLZ76i87EZy2EU",
@@ -568,29 +311,27 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const STORES = [
-  { id: 'jumbo', label: 'Jumbo Portal Ñuñoa', icon: '🏬' },
-  { id: 'lider', label: 'Líder Av. Vespucio', icon: '🏬' },
-  { id: 'mass',  label: 'Mass Av. Vespucio',  icon: '🏪' },
+  { id: 'jumbo', label: 'Jumbo Portal Ñuñoa', icon: '🏬', color: '#185FA5' },
+  { id: 'lider', label: 'Líder Av. Vespucio',  icon: '🏬', color: '#1D9E75' },
+  { id: 'mass',  label: 'Mass Av. Vespucio',   icon: '🏪', color: '#BA7517' },
 ];
 
 let currentUser = null;
 let allProducts = [];
 let currentTab = 'all';
 let editingProductId = null;
-let editingPriceCtx = null; // {productId, storeId}
+let editingPriceCtx = null;
 let unsubscribe = null;
+let historyChart = null;
+let historyProductId = null;
+let historyActiveStore = 'jumbo';
 
 // ── AUTH ──────────────────────────────────
 window.loginGoogle = async () => {
-  const provider = new GoogleAuthProvider();
-  try { await signInWithPopup(auth, provider); }
+  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
   catch(e) { alert('Error al iniciar sesión: ' + e.message); }
 };
-
-window.logout = async () => {
-  if (unsubscribe) unsubscribe();
-  await signOut(auth);
-};
+window.logout = async () => { if (unsubscribe) unsubscribe(); await signOut(auth); };
 
 onAuthStateChanged(auth, user => {
   currentUser = user;
@@ -617,19 +358,17 @@ onAuthStateChanged(auth, user => {
 // ── FIRESTORE ─────────────────────────────
 function listenProducts() {
   if (unsubscribe) unsubscribe();
-  const q = query(collection(db, 'users', currentUser.uid, 'products'));
-  unsubscribe = onSnapshot(q, snap => {
+  unsubscribe = onSnapshot(query(collection(db, 'users', currentUser.uid, 'products')), snap => {
     allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     allProducts.sort((a,b) => a.name.localeCompare(b.name, 'es'));
     renderProducts();
+    if (historyProductId) refreshHistoryModal();
   });
 }
 
 async function saveProductToDb(product) {
-  const ref = doc(db, 'users', currentUser.uid, 'products', product.id);
-  await setDoc(ref, product);
+  await setDoc(doc(db, 'users', currentUser.uid, 'products', product.id), product);
 }
-
 async function deleteProductFromDb(id) {
   await deleteDoc(doc(db, 'users', currentUser.uid, 'products', id));
 }
@@ -638,7 +377,7 @@ async function deleteProductFromDb(id) {
 function getFiltered() {
   const q = document.getElementById('search-input').value.trim().toLowerCase();
   return allProducts.filter(p => {
-    const matchSearch = !q || p.name.toLowerCase().includes(q) || (p.category || '').toLowerCase().includes(q);
+    const matchSearch = !q || p.name.toLowerCase().includes(q) || (p.category||'').toLowerCase().includes(q) || (p.skuLider||'').includes(q) || (p.skuJumbo||'').includes(q);
     const matchTab = currentTab === 'all' || p.category === currentTab;
     return matchSearch && matchTab;
   });
@@ -649,100 +388,111 @@ function renderProducts() {
   const filtered = getFiltered();
   document.getElementById('product-count').textContent = filtered.length;
   updateSavingsBar(filtered);
-
-  if (filtered.length === 0) {
-    list.innerHTML = `<div class="empty-state">
-      <p>No hay productos todavía</p>
-      <button class="btn btn-primary" onclick="openAddProduct()">+ Agregar el primero</button>
-    </div>`;
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-state"><p>No hay productos todavía</p><button class="btn btn-primary" onclick="openAddProduct()">+ Agregar el primero</button></div>`;
     return;
   }
-
-  list.innerHTML = filtered.map(p => renderCard(p)).join('');
+  list.innerHTML = filtered.map(renderCard).join('');
 }
 
 function renderCard(p) {
   const prices = p.prices || {};
-  const validPrices = STORES.filter(s => prices[s.id] > 0).map(s => ({ ...s, value: prices[s.id] }));
-  const minPrice = validPrices.length ? Math.min(...validPrices.map(v => v.value)) : null;
+  const history = p.history || {};
+  const valid = STORES.filter(s => (prices[s.id]||0) > 0);
+  const minVal = valid.length ? Math.min(...valid.map(s => prices[s.id])) : null;
 
   const cells = STORES.map(s => {
-    const val = prices[s.id];
-    const isBest = val > 0 && val === minPrice;
-    const noPrice = !val || val <= 0;
-    return `<div class="price-cell ${isBest ? 'best-price' : ''} ${noPrice ? 'no-price' : ''}">
+    const val = prices[s.id] || 0;
+    const isBest = val > 0 && val === minVal && valid.length > 1;
+    const noPrice = val <= 0;
+    const hist = history[s.id] || [];
+    const hasHistory = hist.length > 1;
+    return `<div class="price-cell ${isBest?'best-price':''} ${noPrice?'no-price':''}">
       <div class="store-name">${s.icon} ${s.label}</div>
       ${noPrice
         ? `<div class="price-na">Sin precio</div>`
-        : `<div class="price-value">${formatPrice(val)}</div>
-           <div class="price-date">actualizado hoy</div>`
-      }
-      <button class="edit-price-btn" onclick="openPriceEdit('${p.id}','${s.id}','${s.label}',${val||0})">
-        ✏ ${noPrice ? 'Agregar precio' : 'Editar'}
-      </button>
+        : `<div class="price-value">${fmt(val)}</div>
+           ${isBest ? '<div class="best-label">✓ más barato</div>' : ''}
+           <div class="price-date">${fmtDate(p.updatedAt)}</div>`}
+      <div class="cell-actions">
+        <button class="edit-price-btn" onclick="openPriceEdit('${p.id}','${s.id}','${s.label}',${val})">
+          ✏ ${noPrice?'Agregar':'Editar'}
+        </button>
+        <button class="history-btn" title="Ver historial" onclick="openHistoryModal('${p.id}','${s.id}')">
+          📈${hasHistory?'·':''}
+        </button>
+      </div>
     </div>`;
   }).join('');
 
-  return `<div class="product-card" id="card-${p.id}">
+  // SKU links row
+  const skuLinks = [];
+  if (p.skuLider) skuLinks.push(`<a href="https://super.lider.cl/product/sku/${p.skuLider}" target="_blank"><button class="btn btn-blue">Lider.cl ↗</button></a>`);
+  if (p.skuJumbo) skuLinks.push(`<a href="https://www.jumbo.cl/product/sku/${p.skuJumbo}" target="_blank"><button class="btn btn-blue">Jumbo.cl ↗</button></a>`);
+  const skuRow = (skuLinks.length || p.skuLider || p.skuJumbo)
+    ? `<div class="sku-links"><span>Ver online:</span>${skuLinks.join('')}${!skuLinks.length?'<span style="font-size:12px;color:var(--text-muted)">Agrega SKU para ver links directos</span>':''}</div>`
+    : '';
+
+  return `<div class="product-card">
     <div class="product-header">
       <div>
-        <div class="product-name">${escHtml(p.name)}</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <span class="product-category">${escHtml(p.category || 'Otros')}</span>
-        <div class="product-actions">
-          <button class="btn btn-sm" onclick="openEditProduct('${p.id}')">✏</button>
-          <button class="btn btn-sm btn-danger" onclick="confirmDelete('${p.id}','${escHtml(p.name)}')">✕</button>
+        <div class="product-name">${esc(p.name)}</div>
+        <div class="product-meta">
+          <span class="product-category">${esc(p.category||'Otros')}</span>
+          ${p.skuLider?`<span class="sku-tag">SKU Líder: ${esc(p.skuLider)}</span>`:''}
+          ${p.skuJumbo?`<span class="sku-tag">SKU Jumbo: ${esc(p.skuJumbo)}</span>`:''}
         </div>
+      </div>
+      <div class="product-actions">
+        <button class="btn btn-sm" onclick="openEditProduct('${p.id}')">✏</button>
+        <button class="btn btn-sm btn-danger" onclick="confirmDelete('${p.id}','${esc(p.name)}')">✕</button>
       </div>
     </div>
     <div class="prices-grid">${cells}</div>
+    ${skuRow}
   </div>`;
 }
 
 function updateSavingsBar(filtered) {
   const bar = document.getElementById('savings-bar');
-  const txt = document.getElementById('savings-text');
   const counts = {};
   STORES.forEach(s => counts[s.id] = 0);
-
   filtered.forEach(p => {
     const prices = p.prices || {};
-    const valid = STORES.filter(s => (prices[s.id] || 0) > 0);
+    const valid = STORES.filter(s => (prices[s.id]||0) > 0);
     if (valid.length < 2) return;
-    const min = valid.reduce((a,b) => (prices[a.id] < prices[b.id] ? a : b));
+    const min = valid.reduce((a,b) => prices[a.id] < prices[b.id] ? a : b);
     counts[min.id]++;
   });
-
   const best = Object.entries(counts).sort((a,b) => b[1]-a[1])[0];
   if (best && best[1] > 0) {
     const store = STORES.find(s => s.id === best[0]);
     bar.classList.add('visible');
-    txt.innerHTML = `${store.icon} <strong>${store.label}</strong> tiene el mejor precio en <strong>${best[1]}</strong> de tus productos con precios comparables`;
+    document.getElementById('savings-text').innerHTML =
+      `${store.icon} <strong>${store.label}</strong> tiene el mejor precio en <strong>${best[1]}</strong> producto${best[1]>1?'s':''} de los comparables`;
   } else {
     bar.classList.remove('visible');
   }
 }
 
-// ── MODALS ────────────────────────────────
+// ── MODALS: PRODUCTO ──────────────────────
 window.openAddProduct = () => {
   editingProductId = null;
   document.getElementById('modal-title').textContent = 'Agregar producto';
-  document.getElementById('prod-name').value = '';
+  ['prod-name','prod-sku-lider','prod-sku-jumbo','price-jumbo','price-lider','price-mass'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('prod-category').value = 'Otros';
-  document.getElementById('price-jumbo').value = '';
-  document.getElementById('price-lider').value = '';
-  document.getElementById('price-mass').value = '';
   document.getElementById('product-modal').classList.add('open');
 };
 
-window.openEditProduct = (id) => {
+window.openEditProduct = id => {
   const p = allProducts.find(x => x.id === id);
   if (!p) return;
   editingProductId = id;
   document.getElementById('modal-title').textContent = 'Editar producto';
   document.getElementById('prod-name').value = p.name;
   document.getElementById('prod-category').value = p.category || 'Otros';
+  document.getElementById('prod-sku-lider').value = p.skuLider || '';
+  document.getElementById('prod-sku-jumbo').value = p.skuJumbo || '';
   const prices = p.prices || {};
   document.getElementById('price-jumbo').value = prices.jumbo > 0 ? prices.jumbo : '';
   document.getElementById('price-lider').value = prices.lider > 0 ? prices.lider : '';
@@ -750,21 +500,35 @@ window.openEditProduct = (id) => {
   document.getElementById('product-modal').classList.add('open');
 };
 
-window.closeModal = () => {
-  document.getElementById('product-modal').classList.remove('open');
-};
+window.closeModal = () => document.getElementById('product-modal').classList.remove('open');
 
 window.saveProduct = async () => {
   const name = document.getElementById('prod-name').value.trim();
   if (!name) { alert('Escribe el nombre del producto'); return; }
-  const category = document.getElementById('prod-category').value;
-  const prices = {
+  const id = editingProductId || Date.now().toString(36) + Math.random().toString(36).slice(2);
+  const existing = allProducts.find(x => x.id === id) || {};
+  const oldPrices = existing.prices || {};
+  const oldHistory = existing.history || {};
+  const newPrices = {
     jumbo: parseFloat(document.getElementById('price-jumbo').value) || 0,
     lider: parseFloat(document.getElementById('price-lider').value) || 0,
     mass:  parseFloat(document.getElementById('price-mass').value) || 0,
   };
-  const id = editingProductId || Date.now().toString(36) + Math.random().toString(36).slice(2);
-  await saveProductToDb({ id, name, category, prices, updatedAt: Date.now() });
+  // Append to history for changed prices
+  const newHistory = { ...oldHistory };
+  const now = Date.now();
+  STORES.forEach(s => {
+    if (newPrices[s.id] > 0 && newPrices[s.id] !== oldPrices[s.id]) {
+      newHistory[s.id] = [...(newHistory[s.id] || []), { price: newPrices[s.id], date: now }];
+    }
+  });
+  await saveProductToDb({
+    ...existing, id, name,
+    category: document.getElementById('prod-category').value,
+    skuLider: document.getElementById('prod-sku-lider').value.trim(),
+    skuJumbo: document.getElementById('prod-sku-jumbo').value.trim(),
+    prices: newPrices, history: newHistory, updatedAt: now
+  });
   closeModal();
 };
 
@@ -772,18 +536,28 @@ window.confirmDelete = (id, name) => {
   if (confirm(`¿Eliminar "${name}"?`)) deleteProductFromDb(id);
 };
 
-// Edit single price
+// ── MODALS: PRECIO INDIVIDUAL ─────────────
 window.openPriceEdit = (productId, storeId, storeLabel, currentVal) => {
   editingPriceCtx = { productId, storeId };
   document.getElementById('price-modal-title').textContent = 'Actualizar precio';
-  document.getElementById('price-modal-subtitle').textContent = `${storeLabel}`;
+  document.getElementById('price-modal-subtitle').textContent = storeLabel;
   document.getElementById('single-price-input').value = currentVal > 0 ? currentVal : '';
+  // Show SKU hint if available
+  const p = allProducts.find(x => x.id === productId);
+  const sku = storeId === 'lider' ? p?.skuLider : storeId === 'jumbo' ? p?.skuJumbo : null;
+  const hint = document.getElementById('price-modal-hint');
+  if (sku) {
+    const url = storeId === 'lider'
+      ? `https://super.lider.cl/product/sku/${sku}`
+      : `https://www.jumbo.cl/product/sku/${sku}`;
+    hint.innerHTML = `<a href="${url}" target="_blank" style="color:var(--blue)">Abrir producto en ${storeId === 'lider' ? 'Lider.cl' : 'Jumbo.cl'} ↗</a>`;
+  } else {
+    hint.innerHTML = '';
+  }
   document.getElementById('price-modal').classList.add('open');
 };
 
-window.closePriceModal = () => {
-  document.getElementById('price-modal').classList.remove('open');
-};
+window.closePriceModal = () => document.getElementById('price-modal').classList.remove('open');
 
 window.saveSinglePrice = async () => {
   if (!editingPriceCtx) return;
@@ -791,8 +565,14 @@ window.saveSinglePrice = async () => {
   const val = parseFloat(document.getElementById('single-price-input').value) || 0;
   const p = allProducts.find(x => x.id === productId);
   if (!p) return;
-  const prices = { ...(p.prices || {}), [storeId]: val };
-  await saveProductToDb({ ...p, prices, updatedAt: Date.now() });
+  const oldVal = (p.prices || {})[storeId] || 0;
+  const prices = { ...(p.prices||{}), [storeId]: val };
+  const history = { ...(p.history||{}) };
+  const now = Date.now();
+  if (val > 0 && val !== oldVal) {
+    history[storeId] = [...(history[storeId]||[]), { price: val, date: now }];
+  }
+  await saveProductToDb({ ...p, prices, history, updatedAt: now });
   closePriceModal();
 };
 
@@ -801,42 +581,149 @@ window.clearPrice = async () => {
   const { productId, storeId } = editingPriceCtx;
   const p = allProducts.find(x => x.id === productId);
   if (!p) return;
-  const prices = { ...(p.prices || {}), [storeId]: 0 };
+  const prices = { ...(p.prices||{}), [storeId]: 0 };
   await saveProductToDb({ ...p, prices, updatedAt: Date.now() });
   closePriceModal();
 };
 
+// ── MODAL: HISTORIAL ──────────────────────
+window.openHistoryModal = (productId, storeId) => {
+  historyProductId = productId;
+  historyActiveStore = storeId || 'jumbo';
+  refreshHistoryModal();
+  document.getElementById('history-modal').classList.add('open');
+};
+
+window.closeHistoryModal = () => {
+  document.getElementById('history-modal').classList.remove('open');
+  historyProductId = null;
+  if (historyChart) { historyChart.destroy(); historyChart = null; }
+};
+
+window.switchHistoryStore = storeId => {
+  historyActiveStore = storeId;
+  refreshHistoryModal();
+};
+
+function refreshHistoryModal() {
+  const p = allProducts.find(x => x.id === historyProductId);
+  if (!p) return;
+  document.getElementById('history-modal-title').textContent = p.name;
+
+  // Store tabs
+  document.getElementById('history-store-tabs').innerHTML = STORES.map(s =>
+    `<button class="history-store-tab ${s.id===historyActiveStore?'active':''}" onclick="switchHistoryStore('${s.id}')">${s.icon} ${s.label.split(' ')[0]}</button>`
+  ).join('');
+
+  const store = STORES.find(s => s.id === historyActiveStore);
+  const hist = (p.history || {})[historyActiveStore] || [];
+
+  if (hist.length === 0) {
+    // Destroy old chart
+    if (historyChart) { historyChart.destroy(); historyChart = null; }
+    document.getElementById('history-table-wrap').innerHTML =
+      `<div class="no-history">Sin historial para ${store.label}.<br>Edita el precio para empezar a registrar.</div>`;
+    return;
+  }
+
+  // Chart
+  const labels = hist.map(h => fmtDateShort(h.date));
+  const data = hist.map(h => h.price);
+
+  if (historyChart) { historyChart.destroy(); historyChart = null; }
+  const ctx = document.getElementById('history-chart').getContext('2d');
+  historyChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: store.label,
+        data,
+        borderColor: store.color,
+        backgroundColor: store.color + '22',
+        pointBackgroundColor: store.color,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        tension: 0.3,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: ctx => '$' + Math.round(ctx.parsed.y).toLocaleString('es-CL')
+          }
+        }
+      },
+      scales: {
+        y: {
+          ticks: {
+            callback: v => '$' + Math.round(v).toLocaleString('es-CL'),
+            font: { size: 11 }
+          },
+          grid: { color: 'rgba(0,0,0,0.06)' }
+        },
+        x: { ticks: { font: { size: 11 } } }
+      }
+    }
+  });
+
+  // Table
+  const rows = [...hist].reverse().map(h =>
+    `<tr><td>${fmtDateFull(h.date)}</td><td style="text-align:right;font-weight:600">${fmt(h.price)}</td></tr>`
+  ).join('');
+  document.getElementById('history-table-wrap').innerHTML =
+    `<table class="history-table">
+      <thead><tr><th>Fecha</th><th style="text-align:right">Precio</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+}
+
 // ── SEARCH + TABS ─────────────────────────
 window.filterProducts = () => renderProducts();
-
-window.switchTab = (tab) => {
+window.switchTab = tab => {
   currentTab = tab;
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  const tabIds = { all: 'tab-all', 'Lácteos': 'tab-lacteos', 'Panadería': 'tab-panaderia', 'Carnes': 'tab-carnes', 'Otros': 'tab-otros' };
-  const el = document.getElementById(tabIds[tab]);
-  if (el) el.classList.add('active');
+  const map = { all:'tab-all','Lácteos':'tab-lacteos','Panadería':'tab-panaderia','Carnes':'tab-carnes','Verduras':'tab-verduras','Otros':'tab-otros' };
+  document.getElementById(map[tab])?.classList.add('active');
   renderProducts();
 };
 
 // Close modals on overlay click
-document.getElementById('product-modal').addEventListener('click', e => {
-  if (e.target === document.getElementById('product-modal')) closeModal();
-});
-document.getElementById('price-modal').addEventListener('click', e => {
-  if (e.target === document.getElementById('price-modal')) closePriceModal();
+['product-modal','price-modal','history-modal'].forEach(id => {
+  document.getElementById(id).addEventListener('click', e => {
+    if (e.target.id === id) {
+      if (id === 'history-modal') closeHistoryModal();
+      else if (id === 'price-modal') closePriceModal();
+      else closeModal();
+    }
+  });
 });
 
 // ── UTILS ─────────────────────────────────
-function formatPrice(n) {
-  return '$' + Math.round(n).toLocaleString('es-CL');
+function fmt(n) { return '$' + Math.round(n).toLocaleString('es-CL'); }
+function fmtDate(ts) {
+  if (!ts) return '';
+  const d = new Date(ts);
+  return d.toLocaleDateString('es-CL', { day:'numeric', month:'short' });
 }
-function escHtml(s) {
+function fmtDateShort(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString('es-CL', { day:'numeric', month:'short' });
+}
+function fmtDateFull(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString('es-CL', { day:'numeric', month:'long', year:'numeric' });
+}
+function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// Initial render placeholder
 document.getElementById('product-list').innerHTML = '<div class="loading">Iniciando...</div>';
 </script>
-
 </body>
 </html>
