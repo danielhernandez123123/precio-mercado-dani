@@ -26,7 +26,7 @@ db = firestore.client()
 
 
 # ==========================================
-# SCRAPERS
+# HEADERS
 # ==========================================
 
 HEADERS = {
@@ -37,6 +37,10 @@ HEADERS = {
     )
 }
 
+
+# ==========================================
+# SCRAPER LIDER
+# ==========================================
 
 def obtener_precio_lider(url):
 
@@ -64,9 +68,15 @@ def obtener_precio_lider(url):
         return None
 
 
+# ==========================================
+# SCRAPER JUMBO
+# ==========================================
+
 def obtener_precio_jumbo(url):
 
     try:
+
+        print(f"Consultando Jumbo: {url}")
 
         html = requests.get(
             url,
@@ -74,15 +84,43 @@ def obtener_precio_jumbo(url):
             timeout=30
         ).text
 
+        # Método 1 (meta tag)
         m = re.search(
-            r'property="product:price:amount"\s+content="(\d+)"',
+            r'product:price:amount[^>]*content="(\d+)"',
             html
         )
 
-        if not m:
-            return None
+        if m:
+            precio = int(m.group(1))
+            print(f"Jumbo método 1: {precio}")
+            return precio
 
-        return int(m.group(1))
+        # Método 2 (JSON VTEX)
+        m = re.search(
+            r'"price":(\d+),"listPrice"',
+            html
+        )
+
+        if m:
+            precio = int(m.group(1))
+            print(f"Jumbo método 2: {precio}")
+            return precio
+
+        # Método 3 (más flexible)
+        m = re.search(
+            r'"price"\s*:\s*(\d+)',
+            html
+        )
+
+        if m:
+            precio = int(m.group(1))
+            print(f"Jumbo método 3: {precio}")
+            return precio
+
+        print("NO SE ENCONTRÓ PRECIO EN JUMBO")
+        print(url)
+
+        return None
 
     except Exception as e:
 
@@ -219,7 +257,7 @@ for user_doc in db.collection("users").list_documents():
                     print("No se pudo obtener precio Jumbo.cl")
 
             # =====================================
-            # ACTUALIZAR FIRESTORE
+            # FIRESTORE
             # =====================================
 
             if hubo_cambios:
