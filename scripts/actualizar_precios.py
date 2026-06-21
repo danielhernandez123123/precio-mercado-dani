@@ -137,7 +137,7 @@ def obtener_precio_jumbo(url):
         # Esperar antes de reintentar
         if intento < 3:
 
-            espera = random.uniform(60, 80)
+            espera = random.uniform(20, 30)
 
             print(
                 f"Reintentando en {espera:.1f} segundos..."
@@ -297,7 +297,7 @@ for user_doc in db.collection("users").list_documents():
 
                 print("Sin cambios")
 
-            espera = random.uniform(20, 60)
+            espera = random.uniform(8, 15)
 
             print(
                 f"Esperando {espera:.1f} segundos..."
