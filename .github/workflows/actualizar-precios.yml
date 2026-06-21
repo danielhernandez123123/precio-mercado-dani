@@ -1,6 +1,24 @@
-from firebase_admin import firestore
+name: Actualizar precios
 
-db = firestore.client()
+on:
+  schedule:
+    - cron: '0 * * * *'
 
-for coleccion in db.collections():
-    print("Colección:", coleccion.id)
+  workflow_dispatch:
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - run: python scripts/actualizar_precios.py
+        env:
+          FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
