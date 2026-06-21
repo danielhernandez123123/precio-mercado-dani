@@ -761,7 +761,7 @@ function refreshHistoryModal() {
   const pointColors = hist.map(h => h.offerActive ? '#e0a020' : store.color);
   const pointRadius = hist.map(h => h.offerActive ? 7 : 5);
   historyChart=new Chart(ctx,{type:'line',data:{
-    labels:hist.map(h=>fmtDateShort(h.date)),
+    labels:hist.map(h=>fmtDateShort(h.date ?? h.timestamp)),
     datasets:[{
       label:store.label,
       data:hist.map(h=>h.price), // always the normal unit price
@@ -791,7 +791,7 @@ function refreshHistoryModal() {
     +'<table class="history-table"><thead><tr><th>Fecha</th><th style="text-align:right">Precio unitario</th><th>Oferta activa</th></tr></thead><tbody>'
     +[...hist].reverse().map(h=>
       '<tr>'
-      +'<td>'+fmtDateFull(h.date)+'</td>'
+      +'<td>'+fmtDateFull(h.date ?? h.timestamp)+'</td>'
       +'<td style="text-align:right;font-weight:600">'+fmt(h.price)+'</td>'
       +'<td style="font-size:11px;color:var(--amber)">'+(h.offerActive?'🏷 '+h.offerActive.qty+'x'+fmt(h.offerActive.total):'—')+'</td>'
       +'</tr>'
@@ -805,8 +805,8 @@ function refreshHistoryModal() {
     const offerKey = h.offerActive ? JSON.stringify(h.offerActive) : null;
     if (offerKey) {
       if (!openOffer || JSON.stringify(openOffer.offer) !== offerKey) {
-        if (openOffer) offerPeriods.push({...openOffer, endDate: h.date});
-        openOffer = { offer: h.offerActive, startDate: h.date };
+        if (openOffer) offerPeriods.push({...openOffer, endDate: (h.date ?? h.timestamp)});
+        openOffer = { offer: h.offerActive, startDate: (h.date ?? h.timestamp) };
       }
     } else {
       if (openOffer) { offerPeriods.push({...openOffer, endDate: h.date}); openOffer = null; }
