@@ -12,21 +12,23 @@ firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-uid = "xp6AChrnInM8eMy5NCquUFX1TO02"
+for user_doc in db.collection("users").list_documents():
 
-doc = db.collection("users").document(uid).get()
+    print("Usuario:", user_doc.id)
 
-print("Existe:", doc.exists)
+    products = list(
+        user_doc.collection("products").stream()
+    )
 
-products = list(
-    db.collection("users")
-    .document(uid)
-    .collection("products")
-    .stream()
-)
+    print("Productos:", len(products))
 
-print("Cantidad de productos:", len(products))
+    for p in products:
+        data = p.to_dict()
 
-for p in products[:10]:
-    print("\nID:", p.id)
-    print(p.to_dict())
+        print(
+            data.get("name"),
+            "| Jumbo:",
+            data.get("skuJumbo"),
+            "| Lider:",
+            data.get("skuLider")
+        )
