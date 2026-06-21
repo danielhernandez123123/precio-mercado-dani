@@ -33,8 +33,16 @@ HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/137.0 Safari/537.36"
-    )
+        "Chrome/137.0.0.0 Safari/537.36"
+    ),
+    "Accept": (
+        "text/html,application/xhtml+xml,"
+        "application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
+    ),
+    "Accept-Language": "es-CL,es;q=0.9,en;q=0.8",
+    "Cache-Control": "no-cache",
+    "Pragma": "no-cache",
+    "Connection": "keep-alive"
 }
 
 
@@ -73,77 +81,74 @@ def obtener_precio_lider(url):
 # ==========================================
 def obtener_precio_jumbo(url):
 
-    try:
+    for intento in range(1, 4):
 
-        print(f"Consultando Jumbo: {url}")
+        try:
 
-        html = requests.get(
-            url,
-            headers=HEADERS,
-            timeout=30
-        ).text
+            print(f"Consultando Jumbo (intento {intento}/3): {url}")
 
-        # Método 1 (meta tag)
-        m = re.search(
-            r'product:price:amount[^>]*content="(\d+)"',
-            html
-        )
+            response = requests.get(
+                url,
+                headers=HEADERS,
+                timeout=30
+            )
 
-        if m:
-            precio = int(m.group(1))
-            print(f"Jumbo método 1: {precio}")
-            return precio
+            html = response.text
 
-        # Método 2 (JSON VTEX)
-        m = re.search(
-            r'"price":(\d+),"listPrice"',
-            html
-        )
+            # Método 1 (meta tag)
+            m = re.search(
+                r'product:price:amount[^>]*content="(\d+)"',
+                html
+            )
 
-        if m:
-            precio = int(m.group(1))
-            print(f"Jumbo método 2: {precio}")
-            return precio
+            if m:
+                precio = int(m.group(1))
+                print(f"Jumbo método 1: {precio}")
+                return precio
 
-        # Método 3 (más flexible)
-        m = re.search(
-            r'"price"\s*:\s*(\d+)',
-            html
-        )
+            # Método 2 (JSON VTEX)
+            m = re.search(
+                r'"price":(\d+),"listPrice"',
+                html
+            )
 
-        if m:
-            precio = int(m.group(1))
-            print(f"Jumbo método 3: {precio}")
-            return precio
+            if m:
+                precio = int(m.group(1))
+                print(f"Jumbo método 2: {precio}")
+                return precio
 
-        print("\n==============================")
-        print("NO SE ENCONTRÓ PRECIO EN JUMBO")
-        print(url)
+            # Método 3 (genérico)
+            m = re.search(
+                r'"price"\s*:\s*(\d+)',
+                html
+            )
 
-        idx = html.lower().find("price")
+            if m:
+                precio = int(m.group(1))
+                print(f"Jumbo método 3: {precio}")
+                return precio
 
-        if idx != -1:
+            print(f"No se encontró precio (intento {intento})")
 
-            inicio = max(0, idx - 500)
-            fin = min(len(html), idx + 2000)
+        except Exception as e:
 
-            print("\n===== FRAGMENTO HTML =====\n")
-            print(html[inicio:fin])
+            print(f"Error Jumbo intento {intento}: {e}")
 
-        else:
+        # Esperar antes de reintentar
+        if intento < 3:
 
-            print("\n===== NO APARECE 'price' =====\n")
-            print(html[:3000])
+            espera = random.uniform(60, 80)
 
-        print("\n==============================")
+            print(
+                f"Reintentando en {espera:.1f} segundos..."
+            )
 
-        return None
+            time.sleep(espera)
 
-    except Exception as e:
+    print("NO SE ENCONTRÓ PRECIO EN JUMBO")
+    print(url)
 
-        print("Error Jumbo:", e)
-        return None
-
+    return None
 # ==========================================
 # HISTORIAL
 # ==========================================
@@ -292,7 +297,7 @@ for user_doc in db.collection("users").list_documents():
 
                 print("Sin cambios")
 
-            espera = random.uniform(10, 30)
+            espera = random.uniform(20, 60)
 
             print(
                 f"Esperando {espera:.1f} segundos..."
