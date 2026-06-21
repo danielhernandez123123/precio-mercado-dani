@@ -12,24 +12,14 @@ firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-uid = "xp6AChrnInM8eMy5NCquUFX1TOO2"
+print("Buscando documentos en users...")
 
-doc = db.collection("users").document(uid).get()
+docs = db.collection("users").list_documents()
 
-print("Existe:", doc.exists)
+count = 0
 
-if doc.exists:
-    print(doc.to_dict())
+for d in docs:
+    count += 1
+    print("Documento encontrado:", d.id)
 
-    products = list(
-        db.collection("users")
-        .document(uid)
-        .collection("products")
-        .stream()
-    )
-
-    print("Productos:", len(products))
-
-    for p in products[:5]:
-        print(p.id)
-        print(p.to_dict())
+print("Total:", count)
