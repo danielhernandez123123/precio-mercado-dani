@@ -294,6 +294,30 @@ nav { background: var(--surface); border-bottom: 0.5px solid var(--border); padd
       </div>
     </div>
 
+    <div class="store-price-row">
+      <label>🌐 Jumbo.cl<br>(online)</label>
+      <div class="store-price-col">
+        <div class="price-input-wrap"><span>$</span><input type="number" id="price-jumbo_cl" placeholder="Precio normal"></div>
+        <div class="offer-row">
+          <input type="number" id="offer-qty-jumbo_cl" placeholder="Cant." style="width:60px;flex:none">
+          <span class="offer-label">unidades por</span>
+          <div class="price-input-wrap" style="flex:1"><span>$</span><input type="number" id="offer-price-jumbo_cl" placeholder="precio total"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="store-price-row">
+      <label>🌐 Lider.cl<br>(online)</label>
+      <div class="store-price-col">
+        <div class="price-input-wrap"><span>$</span><input type="number" id="price-lider_cl" placeholder="Precio normal"></div>
+        <div class="offer-row">
+          <input type="number" id="offer-qty-lider_cl" placeholder="Cant." style="width:60px;flex:none">
+          <span class="offer-label">unidades por</span>
+          <div class="price-input-wrap" style="flex:1"><span>$</span><input type="number" id="offer-price-lider_cl" placeholder="precio total"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="modal-footer">
       <button class="btn" onclick="closeModal()">Cancelar</button>
       <button class="btn btn-primary" onclick="saveProduct()">Guardar</button>
@@ -347,6 +371,7 @@ nav { background: var(--surface); border-bottom: 0.5px solid var(--border); padd
     <div class="history-store-tabs" id="history-store-tabs"></div>
     <div class="chart-wrap"><canvas id="history-chart"></canvas></div>
     <div id="history-table-wrap"></div>
+    <div id="history-offers-wrap"></div>
     <div class="modal-footer"><button class="btn" onclick="closeHistoryModal()">Cerrar</button></div>
   </div>
 </div>
@@ -376,9 +401,11 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const STORES = [
-  { id: 'jumbo', label: 'Jumbo Portal Ñuñoa', short: 'Jumbo', icon: '🏬', color: '#4a9ede' },
-  { id: 'lider', label: 'Líder Av. Vespucio',  short: 'Líder', icon: '🏬', color: '#1DB373' },
-  { id: 'mass',  label: 'Mass Av. Vespucio',   short: 'Mass',  icon: '🏪', color: '#e0a020' },
+  { id: 'jumbo',    label: 'Jumbo Portal Ñuñoa', short: 'Jumbo',     icon: '🏬', color: '#4a9ede' },
+  { id: 'lider',    label: 'Líder Av. Vespucio',  short: 'Líder',     icon: '🏬', color: '#1DB373' },
+  { id: 'mass',     label: 'Mass Av. Vespucio',   short: 'Mass',      icon: '🏪', color: '#e0a020' },
+  { id: 'jumbo_cl', label: 'Jumbo.cl (online)',    short: 'Jumbo.cl',  icon: '🌐', color: '#7b5ea7' },
+  { id: 'lider_cl', label: 'Lider.cl (online)',    short: 'Lider.cl',  icon: '🌐', color: '#2ec4b6' },
 ];
 
 let currentUser = null, allProducts = [], currentTab = 'all';
@@ -569,8 +596,9 @@ window.openAddProduct = () => {
   editingProductId = null;
   document.getElementById('modal-title').textContent = 'Agregar producto';
   ['prod-name','prod-img','prod-link-jumbo','prod-link-lider',
-   'price-jumbo','price-lider','price-mass',
-   'offer-qty-jumbo','offer-price-jumbo','offer-qty-lider','offer-price-lider','offer-qty-mass','offer-price-mass'
+   'price-jumbo','price-lider','price-mass','price-jumbo_cl','price-lider_cl',
+   'offer-qty-jumbo','offer-price-jumbo','offer-qty-lider','offer-price-lider','offer-qty-mass','offer-price-mass',
+   'offer-qty-jumbo_cl','offer-price-jumbo_cl','offer-qty-lider_cl','offer-price-lider_cl'
   ].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('prod-category').value = 'Otros';
   document.getElementById('product-modal').classList.add('open');
@@ -589,6 +617,8 @@ window.openEditProduct = id => {
   document.getElementById('price-jumbo').value = prices.jumbo>0?prices.jumbo:'';
   document.getElementById('price-lider').value = prices.lider>0?prices.lider:'';
   document.getElementById('price-mass').value = prices.mass>0?prices.mass:'';
+  document.getElementById('price-jumbo_cl').value = prices.jumbo_cl>0?prices.jumbo_cl:'';
+  document.getElementById('price-lider_cl').value = prices.lider_cl>0?prices.lider_cl:'';
   STORES.forEach(s => {
     const o = offers[s.id]||{};
     document.getElementById('offer-qty-'+s.id).value = o.qty||'';
@@ -610,6 +640,8 @@ window.saveProduct = async () => {
     jumbo: parseFloat(document.getElementById('price-jumbo').value)||0,
     lider: parseFloat(document.getElementById('price-lider').value)||0,
     mass:  parseFloat(document.getElementById('price-mass').value)||0,
+    jumbo_cl: parseFloat(document.getElementById('price-jumbo_cl').value)||0,
+    lider_cl: parseFloat(document.getElementById('price-lider_cl').value)||0,
   };
   const newOffers = {};
   STORES.forEach(s => {
@@ -620,9 +652,15 @@ window.saveProduct = async () => {
   const newHistory = {...oldHistory};
   const now = Date.now();
   STORES.forEach(s => {
-    const ep = effectivePrice(newPrices,newOffers,s.id);
-    const oldEp = effectivePrice(oldPrices,existing.offers||{},s.id);
-    if (ep>0 && ep!==oldEp) newHistory[s.id]=[...(newHistory[s.id]||[]),{price:ep,date:now}];
+    const newNormal = newPrices[s.id]||0;
+    const oldNormal = (existing.prices||{})[s.id]||0;
+    const oldOfferKey = JSON.stringify((existing.offers||{})[s.id]||null);
+    const newOfferKey = JSON.stringify(newOffers[s.id]||null);
+    if (newNormal>0 && (newNormal!==oldNormal || oldOfferKey!==newOfferKey)) {
+      const entry = {price:newNormal, date:now};
+      if (newOffers[s.id]) entry.offerActive = {...newOffers[s.id]};
+      newHistory[s.id] = [...(newHistory[s.id]||[]), entry];
+    }
   });
   await saveProductToDb({...existing,id,name,
     category: document.getElementById('prod-category').value,
@@ -647,9 +685,10 @@ window.openPriceEdit = (productId, storeId, storeLabel, currentVal, currentOffer
   document.getElementById('single-offer-qty').value = currentOffer?.qty||'';
   document.getElementById('single-offer-price').value = currentOffer?.total||'';
   const p = allProducts.find(x=>x.id===productId);
-  const link = storeId==='lider'?p?.linkLider:storeId==='jumbo'?p?.linkJumbo:null;
+  const link = storeId==='lider'?p?.linkLider:storeId==='jumbo'?p?.linkJumbo:storeId==='lider_cl'?p?.linkLider:storeId==='jumbo_cl'?p?.linkJumbo:null;
+  const linkLabel = (storeId==='lider'||storeId==='lider_cl')?'Lider.cl':'Jumbo.cl';
   const hint = document.getElementById('price-modal-hint');
-  hint.innerHTML = link ? '<a href="'+link+'" target="_blank" style="color:var(--blue)">Abrir producto en '+(storeId==='lider'?'Lider.cl':'Jumbo.cl')+' ↗</a>' : '';
+  hint.innerHTML = link ? '<a href="'+link+'" target="_blank" style="color:var(--blue)">Abrir producto en '+linkLabel+' ↗</a>' : '';
   document.getElementById('price-modal').classList.add('open');
 };
 window.closePriceModal = () => document.getElementById('price-modal').classList.remove('open');
@@ -666,9 +705,15 @@ window.saveSinglePrice = async () => {
   if (qty>0&&total>0) offers[storeId]={qty,total}; else delete offers[storeId];
   const history = {...(p.history||{})};
   const now = Date.now();
-  const newEff = effectivePrice(prices,offers,storeId);
-  const oldEff = effectivePrice(p.prices||{},p.offers||{},storeId);
-  if (newEff>0&&newEff!==oldEff) history[storeId]=[...(history[storeId]||[]),{price:newEff,date:now}];
+  const oldVal = (p.prices||{})[storeId]||0;
+  const oldOfferKey = JSON.stringify((p.offers||{})[storeId]||null);
+  const newOfferKey = JSON.stringify(offers[storeId]||null);
+  // Record entry if normal price changed OR offer changed
+  if (val>0 && (val!==oldVal || oldOfferKey!==newOfferKey)) {
+    const entry = {price:val, date:now}; // always normal unit price
+    if (offers[storeId]) entry.offerActive = {...offers[storeId]}; // snapshot of current offer
+    history[storeId] = [...(history[storeId]||[]), entry];
+  }
   await saveProductToDb({...p,prices,offers,history,updatedAt:now});
   closePriceModal();
 };
@@ -707,16 +752,84 @@ function refreshHistoryModal() {
   if(historyChart){historyChart.destroy();historyChart=null;}
   if(!hist.length){
     document.getElementById('history-table-wrap').innerHTML='<div class="no-history">Sin historial para '+store.label+'.<br>Edita el precio para empezar a registrar.</div>';
+    document.getElementById('history-offers-wrap').innerHTML='';
     return;
   }
+
+  // Chart always shows the NORMAL unit price (no offer calculation)
   const ctx=document.getElementById('history-chart').getContext('2d');
+  const pointColors = hist.map(h => h.offerActive ? '#e0a020' : store.color);
+  const pointRadius = hist.map(h => h.offerActive ? 7 : 5);
   historyChart=new Chart(ctx,{type:'line',data:{
     labels:hist.map(h=>fmtDateShort(h.date)),
-    datasets:[{label:store.label,data:hist.map(h=>h.price),borderColor:store.color,backgroundColor:store.color+'22',pointBackgroundColor:store.color,pointRadius:5,pointHoverRadius:7,tension:0.3,fill:true}]
-  },options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'$'+Math.round(c.parsed.y).toLocaleString('es-CL')}}},scales:{y:{ticks:{callback:v=>'$'+Math.round(v).toLocaleString('es-CL'),font:{size:11},color:'#888780'},grid:{color:'rgba(255,255,255,0.06)'}},x:{ticks:{font:{size:11},color:'#888780'},grid:{color:'rgba(255,255,255,0.04)'}}}}});
-  document.getElementById('history-table-wrap').innerHTML='<table class="history-table"><thead><tr><th>Fecha</th><th style="text-align:right">Precio</th></tr></thead><tbody>'
-    +[...hist].reverse().map(h=>'<tr><td>'+fmtDateFull(h.date)+'</td><td style="text-align:right;font-weight:600">'+fmt(h.price)+'</td></tr>').join('')
+    datasets:[{
+      label:store.label,
+      data:hist.map(h=>h.price), // always the normal unit price
+      borderColor:store.color,
+      backgroundColor:store.color+'22',
+      pointBackgroundColor:pointColors,
+      pointBorderColor:pointColors,
+      pointRadius,
+      pointHoverRadius:7,
+      tension:0.3,
+      fill:true
+    }]
+  },options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{callbacks:{
+      label:c=>'$'+Math.round(c.parsed.y).toLocaleString('es-CL')+' c/u (normal)',
+      afterLabel:c=>{const h=hist[c.dataIndex];return h.offerActive?'🏷 Oferta vigente: '+h.offerActive.qty+'x'+fmt(h.offerActive.total):''}
+    }}},
+    scales:{
+      y:{ticks:{callback:v=>'$'+Math.round(v).toLocaleString('es-CL'),font:{size:11},color:'#888780'},grid:{color:'rgba(255,255,255,0.06)'}},
+      x:{ticks:{font:{size:11},color:'#888780'},grid:{color:'rgba(255,255,255,0.04)'}}
+    }
+  }});
+
+  // Table: show normal price + offer note
+  document.getElementById('history-table-wrap').innerHTML=
+    '<p style="font-size:11px;color:var(--text-muted);margin-bottom:6px">🟡 Puntos naranjos = precio registrado durante una oferta</p>'
+    +'<table class="history-table"><thead><tr><th>Fecha</th><th style="text-align:right">Precio unitario</th><th>Oferta activa</th></tr></thead><tbody>'
+    +[...hist].reverse().map(h=>
+      '<tr>'
+      +'<td>'+fmtDateFull(h.date)+'</td>'
+      +'<td style="text-align:right;font-weight:600">'+fmt(h.price)+'</td>'
+      +'<td style="font-size:11px;color:var(--amber)">'+(h.offerActive?'🏷 '+h.offerActive.qty+'x'+fmt(h.offerActive.total):'—')+'</td>'
+      +'</tr>'
+    ).join('')
     +'</tbody></table>';
+
+  // Offer periods section below chart
+  const offerPeriods = [];
+  let openOffer = null;
+  hist.forEach((h, i) => {
+    const offerKey = h.offerActive ? JSON.stringify(h.offerActive) : null;
+    if (offerKey) {
+      if (!openOffer || JSON.stringify(openOffer.offer) !== offerKey) {
+        if (openOffer) offerPeriods.push({...openOffer, endDate: h.date});
+        openOffer = { offer: h.offerActive, startDate: h.date };
+      }
+    } else {
+      if (openOffer) { offerPeriods.push({...openOffer, endDate: h.date}); openOffer = null; }
+    }
+  });
+  if (openOffer) offerPeriods.push({...openOffer, endDate: null}); // still active
+
+  const offersWrap = document.getElementById('history-offers-wrap');
+  if (offerPeriods.length) {
+    offersWrap.innerHTML = '<div style="background:var(--amber-light);border:0.5px solid var(--amber);border-radius:var(--radius-sm);padding:10px 12px;margin-top:10px">'
+      +'<p style="font-size:12px;font-weight:600;color:var(--amber);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em">🏷 Períodos de oferta registrados</p>'
+      +offerPeriods.map(op=>
+        '<div style="font-size:12px;color:var(--text-muted);padding:4px 0;border-bottom:0.5px solid rgba(255,255,255,0.06)">'
+        +'<strong style="color:var(--amber)">'+op.offer.qty+'x'+fmt(op.offer.total)+'</strong>'
+        +' ('+fmt(op.offer.total/op.offer.qty)+' c/u con oferta)'
+        +' — Desde <strong style="color:var(--text)">'+fmtDateFull(op.startDate)+'</strong>'
+        +(op.endDate?' hasta <strong style="color:var(--text)">'+fmtDateFull(op.endDate)+'</strong>':'<em style="color:var(--amber)"> (vigente)</em>')
+        +'</div>'
+      ).join('')
+      +'</div>';
+  } else {
+    offersWrap.innerHTML = '';
+  }
 }
 
 // ── SEARCH + TABS ─────────────────────────
