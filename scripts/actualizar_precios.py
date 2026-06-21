@@ -1,28 +1,18 @@
-import os
-import json
+import requests
 
-import firebase_admin
-from firebase_admin import credentials
-from firebase_admin import firestore
+url = "https://super.lider.cl/ip/variedad/00780223007002"
 
-cred_json = json.loads(os.environ["FIREBASE_CREDENTIALS"])
-
-cred = credentials.Certificate(cred_json)
-firebase_admin.initialize_app(cred)
-
-db = firestore.client()
-
-for user_doc in db.collection("users").list_documents():
-
-    print("Usuario:", user_doc.id)
-
-    products = list(
-        user_doc.collection("products").stream()
+headers = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/137.0 Safari/537.36"
     )
+}
 
-    for p in products:
-        data = p.to_dict()
+r = requests.get(url, headers=headers, timeout=30)
 
-        print("\nPRODUCTO:", data.get("name"))
-        print("JUMBO :", data.get("linkJumbo"))
-        print("LIDER :", data.get("linkLider"))
+print("STATUS:", r.status_code)
+
+print("\nPRIMEROS 1000 CARACTERES:\n")
+print(r.text[:1000])
