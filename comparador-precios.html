@@ -161,10 +161,61 @@ nav { background: var(--surface); border-bottom: 0.5px solid var(--border); padd
 /* PRICE EDIT MODAL */
 .single-price-modal { max-width: 380px; }
 
+/* CART BUTTON IN NAV */
+.cart-nav-btn { position: relative; background: var(--surface2); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 6px 12px; cursor: pointer; color: var(--text); font-size: 18px; display: none; transition: background 0.15s; }
+.cart-nav-btn:hover { background: var(--gray-light); }
+.cart-nav-btn.has-items { border-color: var(--green); }
+.cart-badge { position: absolute; top: -6px; right: -6px; background: var(--green); color: #0a2018; font-size: 11px; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+/* ADD TO CART BTN ON CARDS */
+.add-cart-btn { background: var(--green-light); border: 0.5px solid var(--green); color: var(--green-dark); font-size: 16px; border-radius: 6px; padding: 4px 8px; cursor: pointer; transition: background 0.15s; }
+.add-cart-btn:hover { background: var(--green); color: #0a2018; }
+.add-cart-btn.in-cart { background: var(--green); color: #0a2018; }
+
+/* CART MODAL */
+.cart-modal { max-width: 680px; }
+.cart-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--border); }
+.cart-item:last-child { border-bottom: none; }
+.cart-item-img { width: 44px; height: 44px; border-radius: 6px; background: var(--surface2); object-fit: contain; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; overflow: hidden; }
+.cart-item-img img { width: 100%; height: 100%; object-fit: contain; }
+.cart-item-info { flex: 1; min-width: 0; }
+.cart-item-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cart-item-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+.cart-qty { display: flex; align-items: center; gap: 6px; }
+.cart-qty-btn { width: 26px; height: 26px; border-radius: 50%; border: 0.5px solid var(--border); background: var(--surface2); color: var(--text); cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; }
+.cart-qty-btn:hover { background: var(--gray-light); }
+.cart-qty-num { font-size: 14px; font-weight: 600; min-width: 20px; text-align: center; }
+.cart-remove { color: var(--red); background: none; border: none; cursor: pointer; font-size: 16px; padding: 4px; }
+
+/* ROUTE RESULT */
+.route-result { margin-top: 1rem; }
+.route-store-block { background: var(--surface2); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 10px; }
+.route-store-block.best-route { border-color: var(--green); }
+.route-store-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.route-store-name { font-weight: 600; font-size: 14px; }
+.route-store-total { font-size: 16px; font-weight: 700; color: var(--green-dark); }
+.route-item-row { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); padding: 2px 0; }
+.route-item-row span:last-child { color: var(--text); font-weight: 500; }
+.savings-callout { background: var(--green-light); border: 0.5px solid var(--green); border-radius: var(--radius-sm); padding: 12px 16px; margin-top: 12px; }
+.savings-callout p { font-size: 13px; color: var(--green-dark); line-height: 1.6; }
+.savings-callout strong { font-weight: 700; }
+.cart-empty { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 14px; }
+.route-tabs { display: flex; gap: 4px; margin-bottom: 1rem; }
+.route-tab { flex: 1; padding: 7px; text-align: center; font-size: 12px; border-radius: 6px; cursor: pointer; border: 0.5px solid var(--border); background: var(--surface2); color: var(--text-muted); }
+.route-tab.active { background: var(--green); color: #0a2018; font-weight: 600; border-color: var(--green); }
+
+/* ROUTE FILTER TOGGLE */
+.route-filter { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; background: var(--surface2); border: 0.5px solid var(--border); border-radius: var(--radius-sm); padding: 8px 12px; }
+.route-filter-label { font-size: 12px; color: var(--text-muted); flex: 1; }
+.toggle-wrap { display: flex; gap: 4px; }
+.toggle-btn { padding: 4px 10px; font-size: 11px; border-radius: 5px; border: 0.5px solid var(--border); background: none; color: var(--text-muted); cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.toggle-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+.no-price-warning { background: var(--amber-light); border: 0.5px solid var(--amber); border-radius: var(--radius-sm); padding: 8px 12px; font-size: 12px; color: var(--amber); margin-bottom: 10px; }
+
 .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
 .empty-state p { margin-bottom: 1rem; }
 .loading { display: flex; align-items: center; justify-content: center; padding: 3rem; color: var(--text-muted); font-size: 14px; }
-
 @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 640px) { .product-grid { grid-template-columns: repeat(2, 1fr); } .prices-grid { grid-template-columns: 1fr; } .user-name-nav { display: none; } nav { padding: 0 1rem; } }
 @media (max-width: 400px) { .product-grid { grid-template-columns: 1fr; } }
@@ -178,6 +229,7 @@ nav { background: var(--surface); border-bottom: 0.5px solid var(--border); padd
     PrecioMercado
   </div>
   <div class="nav-right">
+    <button class="cart-nav-btn" id="cart-nav-btn" onclick="openCartModal()">🛒</button>
     <div class="user-chip" id="user-chip" style="display:none">
       <div class="avatar" id="user-avatar">?</div>
       <span class="user-name-nav" id="user-name-nav"></span>
@@ -376,6 +428,33 @@ nav { background: var(--surface); border-bottom: 0.5px solid var(--border); padd
   </div>
 </div>
 
+<!-- MODAL: CARRITO -->
+<div class="modal-overlay" id="cart-modal">
+  <div class="modal cart-modal">
+    <h3>🛒 Carrito de compras</h3>
+    <div class="route-tabs">
+      <button class="route-tab active" id="cart-tab-items" onclick="switchCartTab('items')">Productos</button>
+      <button class="route-tab" id="cart-tab-route" onclick="switchCartTab('route')">Ruta óptima</button>
+    </div>
+    <div id="cart-items-panel"></div>
+    <div id="cart-route-panel" style="display:none">
+  <div class="route-filter">
+    <span class="route-filter-label">🗺 Calcular ruta usando:</span>
+    <div class="toggle-wrap">
+      <button class="toggle-btn active" id="filter-fisica" onclick="setRouteFilter('fisica')">🏬 Solo físicas</button>
+      <button class="toggle-btn" id="filter-todas" onclick="setRouteFilter('todas')">🌐 Todas</button>
+    </div>
+  </div>
+  <div id="route-content"></div>
+</div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="clearCart()">Vaciar</button>
+      <button class="btn" onclick="closeCartModal()">Cerrar</button>
+      <button class="btn btn-primary" id="calc-route-btn" onclick="switchCartTab('route')">Ver ruta →</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged }
@@ -412,6 +491,9 @@ let currentUser = null, allProducts = [], currentTab = 'all';
 let editingProductId = null, editingPriceCtx = null, unsubscribe = null;
 let historyChart = null, historyProductId = null, historyActiveStore = 'jumbo';
 let detailProductId = null;
+// cart: { [productId]: qty }
+let cart = JSON.parse(localStorage.getItem('pm_cart')||'{}');
+let routeFilter = 'fisica'; // 'fisica' | 'todas'
 
 // ── AUTH ──────────────────────────────────
 window.loginGoogle = async () => {
@@ -427,6 +509,8 @@ onAuthStateChanged(auth, user => {
     document.getElementById('app').style.display = 'block';
     document.getElementById('user-chip').style.display = 'flex';
     document.getElementById('logout-btn').style.display = 'block';
+    document.getElementById('cart-nav-btn').style.display = 'block';
+    updateCartNavBtn();
     document.getElementById('user-name-nav').textContent = user.displayName?.split(' ')[0] || '';
     const av = document.getElementById('user-avatar');
     if (user.photoURL) av.innerHTML = '<img src="'+user.photoURL+'" alt="">';
@@ -511,6 +595,7 @@ function renderGridCard(p) {
     + '<div class="card-actions" onclick="event.stopPropagation()">'
     + '<button class="card-btn" onclick="openEditProduct(\''+p.id+'\')">✏ Editar</button>'
     + '<button class="card-btn" onclick="openDetailModal(\''+p.id+'\')">Ver detalle</button>'
+    + '<button class="add-cart-btn '+(cart[p.id]?'in-cart':'')+'" title="'+(cart[p.id]?'En carrito':'Agregar al carrito')+'" onclick="toggleCart(\''+p.id+'\',event)">'+(cart[p.id]?'✓':'+')+' 🛒</button>'
     + '</div>'
     + '</div></div>';
 }
@@ -675,6 +760,227 @@ window.saveProduct = async () => {
 window.confirmDelete = (id,name) => {
   if (confirm('¿Eliminar "'+name+'"?')) { deleteProductFromDb(id); closeDetailModal(); }
 };
+
+// ── CART ──────────────────────────────────
+function saveCart() { localStorage.setItem('pm_cart', JSON.stringify(cart)); }
+
+function updateCartNavBtn() {
+  const btn = document.getElementById('cart-nav-btn');
+  const total = Object.values(cart).reduce((a,b)=>a+b,0);
+  let inner = '🛒';
+  if (total > 0) inner += '<span class="cart-badge">'+total+'</span>';
+  btn.innerHTML = inner;
+  btn.classList.toggle('has-items', total > 0);
+}
+
+window.toggleCart = (productId, event) => {
+  if (event) event.stopPropagation();
+  if (cart[productId]) {
+    delete cart[productId];
+  } else {
+    cart[productId] = 1;
+  }
+  saveCart();
+  updateCartNavBtn();
+  renderProducts(); // refresh card state
+};
+
+window.setCartQty = (productId, delta) => {
+  const current = cart[productId] || 0;
+  const next = current + delta;
+  if (next <= 0) delete cart[productId];
+  else cart[productId] = next;
+  saveCart();
+  updateCartNavBtn();
+  renderCartPanel();
+};
+
+window.removeFromCart = (productId) => {
+  delete cart[productId];
+  saveCart();
+  updateCartNavBtn();
+  renderCartPanel();
+  renderProducts();
+};
+
+window.clearCart = () => {
+  if (!Object.keys(cart).length) return;
+  if (confirm('¿Vaciar el carrito?')) {
+    cart = {};
+    saveCart();
+    updateCartNavBtn();
+    renderCartPanel();
+    renderProducts();
+  }
+};
+
+window.openCartModal = () => {
+  switchCartTab('items');
+  document.getElementById('cart-modal').classList.add('open');
+};
+window.closeCartModal = () => document.getElementById('cart-modal').classList.remove('open');
+
+let cartActiveTab = 'items';
+window.switchCartTab = (tab) => {
+  cartActiveTab = tab;
+  document.getElementById('cart-tab-items').classList.toggle('active', tab==='items');
+  document.getElementById('cart-tab-route').classList.toggle('active', tab==='route');
+  document.getElementById('cart-items-panel').style.display = tab==='items' ? '' : 'none';
+  document.getElementById('cart-route-panel').style.display = tab==='route' ? '' : 'none';
+  document.getElementById('calc-route-btn').style.display = tab==='items' ? '' : 'none';
+  if (tab==='items') renderCartPanel();
+  else renderRoutePanel();
+};
+
+function renderCartPanel() {
+  const panel = document.getElementById('cart-items-panel');
+  const ids = Object.keys(cart);
+  if (!ids.length) {
+    panel.innerHTML = '<div class="cart-empty">Tu carrito está vacío.<br>Agrega productos con el botón 🛒 en cada tarjeta.</div>';
+    return;
+  }
+  panel.innerHTML = ids.map(pid => {
+    const p = allProducts.find(x=>x.id===pid);
+    if (!p) return '';
+    const qty = cart[pid];
+    const prices=p.prices||{}, offers=p.offers||{};
+    const valid = STORES.filter(s=>effectivePrice(prices,offers,s.id)>0);
+    const bestStore = valid.length ? valid.reduce((a,b)=>effectivePrice(prices,offers,a.id)<effectivePrice(prices,offers,b.id)?a:b) : null;
+    const bestVal = bestStore ? effectivePrice(prices,offers,bestStore.id) : null;
+    const imgHtml = p.imageUrl
+      ? '<img src="'+esc(p.imageUrl)+'" alt="">'
+      : '<span>🛒</span>';
+    return '<div class="cart-item">'
+      +'<div class="cart-item-img">'+imgHtml+'</div>'
+      +'<div class="cart-item-info">'
+      +'<div class="cart-item-name">'+esc(p.name)+'</div>'
+      +'<div class="cart-item-sub">'+(bestVal?'Mejor precio: '+fmt(bestVal)+' ('+bestStore.short+')':'Sin precios')+'</div>'
+      +'</div>'
+      +'<div class="cart-qty">'
+      +'<button class="cart-qty-btn" onclick="setCartQty(\''+pid+'\', -1)">−</button>'
+      +'<span class="cart-qty-num">'+qty+'</span>'
+      +'<button class="cart-qty-btn" onclick="setCartQty(\''+pid+'\', 1)">+</button>'
+      +'</div>'
+      +'<button class="cart-remove" onclick="removeFromCart(\''+pid+'\')">✕</button>'
+      +'</div>';
+  }).join('');
+}
+
+
+window.setRouteFilter = (filter) => {
+  routeFilter = filter;
+  document.getElementById('filter-fisica').classList.toggle('active', filter==='fisica');
+  document.getElementById('filter-todas').classList.toggle('active', filter==='todas');
+  renderRouteContent();
+};
+
+function renderRoutePanel() {
+  // reset toggle UI
+  document.getElementById('filter-fisica').classList.toggle('active', routeFilter==='fisica');
+  document.getElementById('filter-todas').classList.toggle('active', routeFilter==='todas');
+  renderRouteContent();
+}
+
+function renderRouteContent() {
+  const panel = document.getElementById('route-content');
+  const ids = Object.keys(cart);
+  if (!ids.length) { panel.innerHTML = '<div class="cart-empty">El carrito está vacío.</div>'; return; }
+
+  const cartProducts = ids.map(pid => ({ p: allProducts.find(x=>x.id===pid), qty: cart[pid] })).filter(x=>x.p);
+
+  // For each product find the best store
+  // Route: assign each product to cheapest store that has a price
+  const assignments = []; // {product, qty, storeId, unitPrice, lineTotal}
+  const noPrice = [];
+
+  const PHYSICAL = ['jumbo','lider','mass'];
+  const activeStoreIds = routeFilter==='fisica' ? PHYSICAL : STORES.map(s=>s.id);
+  const routeStores = STORES.filter(s => activeStoreIds.includes(s.id));
+
+  cartProducts.forEach(({p, qty}) => {
+    const prices=p.prices||{}, offers=p.offers||{};
+    const valid = routeStores.filter(s=>effectivePrice(prices,offers,s.id)>0);
+    if (!valid.length) { noPrice.push(p.name); return; }
+    const best = valid.reduce((a,b)=>effectivePrice(prices,offers,a.id)<effectivePrice(prices,offers,b.id)?a:b);
+    const unitPx = effectivePrice(prices,offers,best.id);
+    assignments.push({ p, qty, storeId: best.id, unitPrice: unitPx, lineTotal: unitPx * qty });
+  });
+
+  // Group by store
+  const byStore = {};
+  routeStores.forEach(s => byStore[s.id] = []);
+  assignments.forEach(a => byStore[a.storeId].push(a));
+
+  // Total with optimal route
+  const routeTotal = assignments.reduce((s,a)=>s+a.lineTotal, 0);
+
+  // Total if bought everything at cheapest single store
+  // For each store: sum of all products at that store (only if all have a price)
+  let singleStoreBests = routeStores.map(s => {
+    let total = 0;
+    let allAvailable = true;
+    cartProducts.forEach(({p, qty}) => {
+      const prices=p.prices||{}, offers=p.offers||{};
+      const ep = effectivePrice(prices,offers,s.id);
+      if (ep>0) total += ep*qty;
+      else allAvailable = false;
+    });
+    return { storeId: s.id, total, allAvailable };
+  }).filter(x=>x.allAvailable);
+
+  // "Worst case" comparison: most expensive single store that has everything
+  // Or just use the most common single store the user might go to (jumbo as default)
+  // We'll show: "si comprabas todo en [store más caro que tiene todo]"
+  const worstSingle = singleStoreBests.length
+    ? singleStoreBests.reduce((a,b)=>a.total>b.total?a:b)
+    : null;
+  const bestSingle = singleStoreBests.length
+    ? singleStoreBests.reduce((a,b)=>a.total<b.total?a:b)
+    : null;
+
+  const activeStores = routeStores.filter(s => byStore[s.id].length > 0);
+
+  let html = '';
+
+  // No price warning
+  if (noPrice.length) {
+    html += '<div class="no-price-warning">⚠ Sin precios registrados: '+noPrice.map(n=>'<strong>'+esc(n)+'</strong>').join(', ')+'. No se incluyen en la ruta.</div>';
+  }
+
+  // Savings callout
+  if (worstSingle && worstSingle.total > routeTotal) {
+    const saving = worstSingle.total - routeTotal;
+    const worstStore = STORES.find(s=>s.id===worstSingle.storeId);
+    html += '<div class="savings-callout">'
+      +'<p>🎉 <strong>¡Ahorro con ruta óptima: '+fmt(saving)+'!</strong><br>'
+      +'Si compraras todo en '+worstStore.icon+' <strong>'+worstStore.label+'</strong> gastarías <strong>'+fmt(worstSingle.total)+'</strong>.<br>'
+      +(bestSingle && bestSingle.storeId !== worstSingle.storeId ? 'La tienda más barata para comprar todo sería <strong>'+STORES.find(s=>s.id===bestSingle.storeId).label+'</strong> ('+fmt(bestSingle.total)+').<br>' : '')
+      +'Con la ruta óptima gastas <strong>'+fmt(routeTotal)+'</strong> — te ahorras <strong>'+fmt(saving)+'</strong>.</p>'
+      +'</div>';
+  } else if (bestSingle) {
+    html += '<div class="savings-callout"><p>✅ La ruta óptima cuesta <strong>'+fmt(routeTotal)+'</strong>. Comprando todo en un solo lugar el mínimo sería '+fmt(bestSingle.total)+' ('+STORES.find(s=>s.id===bestSingle.storeId).label+').</p></div>';
+  }
+
+  html += '<div class="route-result">';
+
+  // Show each store block
+  activeStores.forEach(store => {
+    const items = byStore[store.id];
+    const storeTotal = items.reduce((s,a)=>s+a.lineTotal,0);
+    html += '<div class="route-store-block">'
+      +'<div class="route-store-header">'
+      +'<span class="route-store-name">'+store.icon+' '+store.label+'</span>'
+      +'<span class="route-store-total">'+fmt(storeTotal)+'</span>'
+      +'</div>'
+      +items.map(a=>'<div class="route-item-row"><span>'+esc(a.p.name)+(a.qty>1?' x'+a.qty:'')+'</span><span>'+fmt(a.lineTotal)+'</span></div>').join('')
+      +'</div>';
+  });
+
+  html += '<div style="text-align:right;font-size:13px;color:var(--text-muted);margin-top:6px">Total ruta: <strong style="color:var(--green-dark);font-size:16px">'+fmt(routeTotal)+'</strong></div>';
+  html += '</div>';
+
+  panel.innerHTML = html;
+}
 
 // ── MODAL: PRECIO INDIVIDUAL ───────────────
 window.openPriceEdit = (productId, storeId, storeLabel, currentVal, currentOffer) => {
@@ -843,12 +1149,13 @@ window.switchTab = tab => {
 };
 
 // Close on overlay click
-['product-modal','detail-modal','price-modal','history-modal'].forEach(id=>{
+['product-modal','detail-modal','price-modal','history-modal','cart-modal'].forEach(id=>{
   document.getElementById(id).addEventListener('click',e=>{
     if(e.target.id===id){
       if(id==='history-modal') closeHistoryModal();
       else if(id==='price-modal') closePriceModal();
       else if(id==='detail-modal') closeDetailModal();
+      else if(id==='cart-modal') closeCartModal();
       else closeModal();
     }
   });
