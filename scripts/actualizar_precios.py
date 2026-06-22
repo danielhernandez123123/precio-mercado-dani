@@ -3,7 +3,7 @@ import json
 import re
 import time
 import random
-from datetime import datetime
+from datetime import datetime, UTC
 
 import requests
 
@@ -171,16 +171,25 @@ def agregar_historial(history, store_id, precio):
 # ==========================================
 # MAIN
 # ==========================================
+productos_procesados = 0
+productos_actualizados = 0
+errores = 0
 
 print("\n===================================")
-print("INICIO:", datetime.utcnow().isoformat(), "UTC")
+print("INICIO:", datetime.now(UTC).isoformat())
 print("===================================\n")
 
-for user_doc in db.collection("users").list_documents():
+usuarios = list(
+    db.collection("users").list_documents()
+)
+
+for user_doc in usuarios:
 
     print(f"\nUsuario: {user_doc.id}")
 
-    productos = user_doc.collection("products").stream()
+    productos = list(
+        user_doc.collection("products").stream()
+    )
 
     for product in productos:
 
@@ -191,6 +200,8 @@ for user_doc in db.collection("users").list_documents():
             nombre = data.get("name", "Sin nombre")
 
             print(f"\n--- {nombre} ---")
+            
+            productos_procesados += 1
 
             prices = data.get("prices", {})
             history = data.get("history", {})
